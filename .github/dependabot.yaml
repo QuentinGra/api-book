@@ -1,0 +1,19 @@
+version: 1
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 2
+    pull-request-branch-name:
+      separator: "/"
+
+  - package-ecosystem: "composer"
+    directory: "/"
+    schedule:
+      interval: daily
+      time: "8:00"
+    open-pull-requests-limit: 2
+    pull-request-branch-name:
+      separator: "/"
+    versioning-strategy: increase-if-necessary
