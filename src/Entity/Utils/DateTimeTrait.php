@@ -3,13 +3,16 @@
 namespace App\Entity\Utils;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 trait DateTimeTrait
 {
     #[ORM\Column]
+    #[Groups(['app:read'])]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['app:read'])]
     private ?\DateTimeImmutable $updatedAt = null;
 
     public function getCreatedAt(): ?\DateTimeImmutable
