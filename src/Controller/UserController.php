@@ -86,18 +86,24 @@ class UserController extends AbstractController
             ], 404);
         }
 
-        $userData = $request->getContent();
-        $this->serializer->deserialize($userData, User::class, 'json', [
+        $userData = json_decode($request->getContent(), true); // Convertir en tableau
+
+        // Vérifier et hacher le mot de passe si présent
+        if (isset($userData['password'])) {
+            $hashedPassword = $this->hasher->hashPassword($user, $userData['password']);
+            $user->setPassword($hashedPassword);
+            // Supprimer le mot de passe du tableau pour éviter la désérialisation sur ce champ
+            unset($userData['password']);
+        }
+
+        // Désérialiser les autres champs
+        $this->serializer->deserialize(json_encode($userData), User::class, 'json', [
             'object_to_populate' => $user,
         ]);
 
         $errors = $this->validator->validate($user);
         if (count($errors) > 0) {
             return $this->json($errors, 422);
-        }
-
-        if ($password = $user->getPassword()) {
-            $user->setPassword($this->hasher->hashPassword($user, $password));
         }
 
         $this->em->persist($user);
