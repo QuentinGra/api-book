@@ -14,6 +14,6 @@ class UserProvider
 
     public function hashPassword(string $plainPassword): string
     {
-        return $this->hasher->hashPassword(new User, $plainPassword);
+        return $this->hasher->hashPassword(new User(), $plainPassword);
     }
 }
