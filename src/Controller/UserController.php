@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,6 +15,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[Route('/api/user', name: 'api.user')]
+#[OA\Tag(name: 'User')]
 class UserController extends AbstractController
 {
     public function __construct(
@@ -26,6 +28,7 @@ class UserController extends AbstractController
     }
 
     #[Route('', name: '.index', methods: ['GET'])]
+    #[OA\Response(response: 200, description: 'Return all users')]
     public function index(): JsonResponse
     {
         return $this->json(
@@ -39,6 +42,7 @@ class UserController extends AbstractController
     }
 
     #[Route('/{id}', name: '.show', methods: ['GET'])]
+    #[OA\Response(response: 200, description: 'Return one user by id')]
     public function show(?User $user): JsonResponse
     {
         if (!$user) {
@@ -54,6 +58,7 @@ class UserController extends AbstractController
     }
 
     #[Route('/create', name: '.create', methods: ['POST'])]
+    #[OA\Response(response: 201, description: 'Add one user')]
     public function create(Request $request): JsonResponse
     {
         $userData = $request->getContent();
@@ -77,6 +82,7 @@ class UserController extends AbstractController
     }
 
     #[Route('/{id}', name: '.update', methods: ['PUT', 'PATCH'])]
+    #[OA\Response(response: 201, description: 'Update one user by id')]
     public function update(Request $request, ?User $user): JsonResponse
     {
         if (!$user) {
@@ -109,12 +115,13 @@ class UserController extends AbstractController
         $this->em->persist($user);
         $this->em->flush();
 
-        return $this->json($user, 200, [], [
+        return $this->json($user, 201, [], [
             'groups' => ['user:read', 'app:read'],
         ]);
     }
 
     #[Route('/{id}', name: '.delete', methods: ['DELETE'])]
+    #[OA\Response(response: 204, description: 'Delete one user by id')]
     public function delete(?User $user): JsonResponse
     {
         if (!$user) {
