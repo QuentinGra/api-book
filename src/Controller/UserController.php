@@ -32,7 +32,19 @@ class UserController extends AbstractController
         path: "/api/user",
         summary: "List all users",
         tags: ["User"],
-        responses: [
+        parameters: [
+            new OA\Parameter(
+                name: "Page",
+                in: "path",
+                description: "Page",
+                schema: new OA\Schema(type: "integer")
+            ),
+            new OA\Parameter(
+                name: "Limit",
+                in: "path",
+                description: "Number of users per page",
+                schema: new OA\Schema(type: "integer")
+            ),
             new OA\Response(
                 response: 200,
                 description: "Return all users",
@@ -63,10 +75,13 @@ class UserController extends AbstractController
             )
         ]
     )]
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
+        $page = $request->get('page', 1);
+        $limit = $request->get('limit', 5);
+
         return $this->json(
-            $this->userRepo->findAll(),
+            $this->userRepo->findAllWithPagination($page, $limit),
             200,
             [],
             [
@@ -192,8 +207,7 @@ class UserController extends AbstractController
     )]
     public function create(Request $request): JsonResponse
     {
-        $userData = $request->getContent();
-        $user = $this->serializer->deserialize($userData, User::class, 'json');
+        $user = $this->serializer->deserialize($request->getContent(), User::class, 'json');
 
         $errors = $this->validator->validate($user);
         if (count($errors) > 0) {
@@ -214,9 +228,11 @@ class UserController extends AbstractController
     }
 
     #[Route('/{id}', name: '.update', methods: ['PUT', 'PATCH'])]
-    #[OA\Response(response: 201, description: 'Update one user by id')]
+    // TODO: Documenter les routes PUT et PATCH
     public function update(Request $request, ?User $user): JsonResponse
     {
+        // FIXME: Refactoriser et Sécuriser, seul l'utilisateur peut modifier sont mot de passe
+
         if (!$user) {
             return $this->json([
                 'status' => 'error',
@@ -224,7 +240,7 @@ class UserController extends AbstractController
             ], 404);
         }
 
-        $userData = json_decode($request->getContent(), true); // Convertir en tableau
+        $userData = json_decode($request->getContent(), true);
 
         // Vérifier et hacher le mot de passe si présent
         if (isset($userData['password'])) {
@@ -253,7 +269,42 @@ class UserController extends AbstractController
     }
 
     #[Route('/{id}', name: '.delete', methods: ['DELETE'])]
-    #[OA\Response(response: 204, description: 'Delete one user by id')]
+    #[OA\Delete(
+        path: "/api/user/{id}",
+        summary: "Delete a new user",
+        tags: ["User"],
+        parameters: [
+            new OA\Parameter(
+                name: "id",
+                in: "path",
+                description: "User id",
+                required: true,
+                schema: new OA\Schema(type: "integer")
+            ),
+            new OA\Response(
+                response: 204,
+                description: "User delete successfully",
+                content: new OA\JsonContent(
+                    type: "object",
+                    properties: [
+                        new OA\Property(property: "status", type: "string"),
+                        new OA\Property(property: "message", type: "string"),
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: 404,
+                description: "User not found",
+                content: new OA\JsonContent(
+                    type: "object",
+                    properties: [
+                        new OA\Property(property: "status", type: "string"),
+                        new OA\Property(property: "message", type: "string"),
+                    ]
+                )
+            )
+        ]
+    )]
     public function delete(?User $user): JsonResponse
     {
         if (!$user) {
