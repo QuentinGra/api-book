@@ -29,50 +29,50 @@ class UserController extends AbstractController
 
     #[Route('', name: '.index', methods: ['GET'])]
     #[OA\Get(
-        path: "/api/user",
-        summary: "List all users",
-        tags: ["User"],
+        path: '/api/user',
+        summary: 'List all users',
+        tags: ['User'],
         parameters: [
             new OA\Parameter(
-                name: "Page",
-                in: "path",
-                description: "Page",
-                schema: new OA\Schema(type: "integer")
+                name: 'Page',
+                in: 'path',
+                description: 'Page',
+                schema: new OA\Schema(type: 'integer')
             ),
             new OA\Parameter(
-                name: "Limit",
-                in: "path",
-                description: "Number of users per page",
-                schema: new OA\Schema(type: "integer")
+                name: 'Limit',
+                in: 'path',
+                description: 'Number of users per page',
+                schema: new OA\Schema(type: 'integer')
             ),
             new OA\Response(
                 response: 200,
-                description: "Return all users",
+                description: 'Return all users',
                 content: new OA\MediaType(
-                    mediaType: "application/json",
+                    mediaType: 'application/json',
                     schema: new OA\Schema(
-                        type: "array",
-                        description: "An array of users",
+                        type: 'array',
+                        description: 'An array of users',
                         items: new OA\Items(
-                            type: "object",
+                            type: 'object',
                             properties: [
-                                new OA\Property(property: "id", type: "integer"),
-                                new OA\Property(property: "email", type: "string"),
+                                new OA\Property(property: 'id', type: 'integer'),
+                                new OA\Property(property: 'email', type: 'string'),
                                 new OA\Property(
-                                    property: "roles",
-                                    type: "array",
-                                    items: new OA\Items(type: "string")
+                                    property: 'roles',
+                                    type: 'array',
+                                    items: new OA\Items(type: 'string')
                                 ),
-                                new OA\Property(property: "firstName", type: "string"),
-                                new OA\Property(property: "lastName", type: "string"),
-                                new OA\Property(property: "birthDate", type: "date"),
-                                new OA\Property(property: "createdAt", type: "datetime"),
-                                new OA\Property(property: "updatedAt", type: "datetime"),
+                                new OA\Property(property: 'firstName', type: 'string'),
+                                new OA\Property(property: 'lastName', type: 'string'),
+                                new OA\Property(property: 'birthDate', type: 'date'),
+                                new OA\Property(property: 'createdAt', type: 'datetime'),
+                                new OA\Property(property: 'updatedAt', type: 'datetime'),
                             ]
                         )
                     )
                 )
-            )
+            ),
         ]
     )]
     public function index(Request $request): JsonResponse
@@ -92,49 +92,49 @@ class UserController extends AbstractController
 
     #[Route('/{id}', name: '.show', methods: ['GET'])]
     #[OA\Get(
-        path: "/api/user/{id}",
-        summary: "List one user by id",
-        tags: ["User"],
+        path: '/api/user/{id}',
+        summary: 'List one user by id',
+        tags: ['User'],
         parameters: [
             new OA\Parameter(
-                name: "id",
-                in: "path",
-                description: "User id",
+                name: 'id',
+                in: 'path',
+                description: 'User id',
                 required: true,
-                schema: new OA\Schema(type: "integer")
+                schema: new OA\Schema(type: 'integer')
             ),
             new OA\Response(
                 response: 200,
-                description: "Return user",
+                description: 'Return user',
                 content: new OA\JsonContent(
-                    type: "object",
+                    type: 'object',
                     properties: [
-                        new OA\Property(property: "id", type: "integer"),
-                        new OA\Property(property: "email", type: "string"),
+                        new OA\Property(property: 'id', type: 'integer'),
+                        new OA\Property(property: 'email', type: 'string'),
                         new OA\Property(
-                            property: "roles",
-                            type: "array",
-                            items: new OA\Items(type: "string")
+                            property: 'roles',
+                            type: 'array',
+                            items: new OA\Items(type: 'string')
                         ),
-                        new OA\Property(property: "firstName", type: "string"),
-                        new OA\Property(property: "lastName", type: "string"),
-                        new OA\Property(property: "birthDate", type: "date"),
-                        new OA\Property(property: "createdAt", type: "datetime"),
-                        new OA\Property(property: "updatedAt", type: "datetime"),
+                        new OA\Property(property: 'firstName', type: 'string'),
+                        new OA\Property(property: 'lastName', type: 'string'),
+                        new OA\Property(property: 'birthDate', type: 'date'),
+                        new OA\Property(property: 'createdAt', type: 'datetime'),
+                        new OA\Property(property: 'updatedAt', type: 'datetime'),
                     ]
                 )
             ),
             new OA\Response(
                 response: 404,
-                description: "User not found",
+                description: 'User not found',
                 content: new OA\JsonContent(
-                    type: "object",
+                    type: 'object',
                     properties: [
-                        new OA\Property(property: "status", type: "string"),
-                        new OA\Property(property: "message", type: "string"),
+                        new OA\Property(property: 'status', type: 'string'),
+                        new OA\Property(property: 'message', type: 'string'),
                     ]
                 )
-            )
+            ),
         ]
     )]
     public function show(?User $user): JsonResponse
@@ -153,23 +153,23 @@ class UserController extends AbstractController
 
     #[Route('/create', name: '.create', methods: ['POST'])]
     #[OA\Post(
-        path: "/api/user/create",
-        summary: "Create a new user",
-        tags: ["User"],
+        path: '/api/user/create',
+        summary: 'Create a new user',
+        tags: ['User'],
         requestBody: new OA\RequestBody(
-            description: "User data to create a new user",
+            description: 'User data to create a new user',
             required: true,
             content: new OA\MediaType(
-                mediaType: "application/json",
+                mediaType: 'application/json',
                 schema: new OA\Schema(
-                    type: "object",
-                    required: ["email", "password"],
+                    type: 'object',
+                    required: ['email', 'password'],
                     properties: [
-                        new OA\Property(property: "email", type: "string"),
-                        new OA\Property(property: "password", type: "string"),
-                        new OA\Property(property: "firstName", type: "string"),
-                        new OA\Property(property: "lastName", type: "string"),
-                        new OA\Property(property: "birthDate", type: "date"),
+                        new OA\Property(property: 'email', type: 'string'),
+                        new OA\Property(property: 'password', type: 'string'),
+                        new OA\Property(property: 'firstName', type: 'string'),
+                        new OA\Property(property: 'lastName', type: 'string'),
+                        new OA\Property(property: 'birthDate', type: 'date'),
                     ]
                 )
             )
@@ -177,32 +177,32 @@ class UserController extends AbstractController
         responses: [
             new OA\Response(
                 response: 201,
-                description: "User created successfully",
+                description: 'User created successfully',
                 content: new OA\JsonContent(
-                    type: "object",
+                    type: 'object',
                     properties: [
-                        new OA\Property(property: "status", type: "string"),
-                        new OA\Property(property: "message", type: "string"),
+                        new OA\Property(property: 'status', type: 'string'),
+                        new OA\Property(property: 'message', type: 'string'),
                     ]
                 )
             ),
             new OA\Response(
                 response: 422,
-                description: "Validation error",
+                description: 'Validation error',
                 content: new OA\MediaType(
-                    mediaType: "application/json",
+                    mediaType: 'application/json',
                     schema: new OA\Schema(
-                        type: "array",
+                        type: 'array',
                         items: new OA\Items(
-                            type: "object",
+                            type: 'object',
                             properties: [
-                                new OA\Property(property: "field", type: "string", description: "Field with validation error"),
-                                new OA\Property(property: "message", type: "string", description: "Validation error message"),
+                                new OA\Property(property: 'field', type: 'string', description: 'Field with validation error'),
+                                new OA\Property(property: 'message', type: 'string', description: 'Validation error message'),
                             ]
                         )
                     )
                 )
-            )
+            ),
         ]
     )]
     public function create(Request $request): JsonResponse
@@ -270,39 +270,39 @@ class UserController extends AbstractController
 
     #[Route('/{id}', name: '.delete', methods: ['DELETE'])]
     #[OA\Delete(
-        path: "/api/user/{id}",
-        summary: "Delete a new user",
-        tags: ["User"],
+        path: '/api/user/{id}',
+        summary: 'Delete a new user',
+        tags: ['User'],
         parameters: [
             new OA\Parameter(
-                name: "id",
-                in: "path",
-                description: "User id",
+                name: 'id',
+                in: 'path',
+                description: 'User id',
                 required: true,
-                schema: new OA\Schema(type: "integer")
+                schema: new OA\Schema(type: 'integer')
             ),
             new OA\Response(
                 response: 204,
-                description: "User delete successfully",
+                description: 'User delete successfully',
                 content: new OA\JsonContent(
-                    type: "object",
+                    type: 'object',
                     properties: [
-                        new OA\Property(property: "status", type: "string"),
-                        new OA\Property(property: "message", type: "string"),
+                        new OA\Property(property: 'status', type: 'string'),
+                        new OA\Property(property: 'message', type: 'string'),
                     ]
                 )
             ),
             new OA\Response(
                 response: 404,
-                description: "User not found",
+                description: 'User not found',
                 content: new OA\JsonContent(
-                    type: "object",
+                    type: 'object',
                     properties: [
-                        new OA\Property(property: "status", type: "string"),
-                        new OA\Property(property: "message", type: "string"),
+                        new OA\Property(property: 'status', type: 'string'),
+                        new OA\Property(property: 'message', type: 'string'),
                     ]
                 )
-            )
+            ),
         ]
     )]
     public function delete(?User $user): JsonResponse
