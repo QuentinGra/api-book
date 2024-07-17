@@ -38,6 +38,59 @@
             "./.php-cs-fixer.dist.php"
         ]
     },
+    "hautelook/alice-bundle": {
+        "version": "2.14",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "2.2",
+            "ref": "c84e4f2b9d7f436d7d52e8369230b393367607ec"
+        },
+        "files": [
+            "./config/packages/hautelook_alice.yaml",
+            "./fixtures/.gitignore"
+        ]
+    },
+    "knplabs/knp-paginator-bundle": {
+        "version": "v6.4.0"
+    },
+    "lexik/jwt-authentication-bundle": {
+        "version": "3.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "2.5",
+            "ref": "e9481b233a11ef7e15fe055a2b21fd3ac1aa2bb7"
+        },
+        "files": [
+            "./config/packages/lexik_jwt_authentication.yaml"
+        ]
+    },
+    "nelmio/alice": {
+        "version": "3.13",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "3.3",
+            "ref": "42b52d2065dc3fde27912d502c18ca1926e35ae2"
+        },
+        "files": [
+            "./config/packages/nelmio_alice.yaml"
+        ]
+    },
+    "nelmio/api-doc-bundle": {
+        "version": "4.28",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "3.0",
+            "ref": "c8e0c38e1a280ab9e37587a8fa32b251d5bc1c94"
+        },
+        "files": [
+            "./config/packages/nelmio_api_doc.yaml",
+            "./config/routes/nelmio_api_doc.yaml"
+        ]
+    },
     "nelmio/cors-bundle": {
         "version": "2.5",
         "recipe": {
@@ -190,6 +243,19 @@
             "./config/routes/security.yaml"
         ]
     },
+    "symfony/translation": {
+        "version": "7.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "6.3",
+            "ref": "e28e27f53663cc34f0be2837aba18e3a1bef8e7b"
+        },
+        "files": [
+            "./config/packages/translation.yaml",
+            "./translations/.gitignore"
+        ]
+    },
     "symfony/twig-bundle": {
         "version": "7.1",
         "recipe": {
@@ -227,5 +293,17 @@
             "./config/packages/web_profiler.yaml",
             "./config/routes/web_profiler.yaml"
         ]
+    },
+    "theofidry/alice-data-fixtures": {
+        "version": "1.7",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "1.0",
+            "ref": "fe5a50faf580eb58f08ada2abe8afbd2d4941e05"
+        }
+    },
+    "twig/extra-bundle": {
+        "version": "v3.10.0"
     }
 }
