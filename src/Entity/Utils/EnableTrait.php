@@ -8,7 +8,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 trait EnableTrait
 {
     #[ORM\Column(type: 'boolean')]
-    #[Groups(['read'])]
+    #[Groups(['app:read'])]
     private ?bool $enable = null;
 
     public function isEnable(): ?bool
