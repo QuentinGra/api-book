@@ -21,6 +21,7 @@ security:
         check_path: /api/login
         success_handler: lexik_jwt_authentication.handler.authentication_success
         failure_handler: lexik_jwt_authentication.handler.authentication_failure
+
     api:
       pattern: ^/api
       stateless: true
@@ -29,6 +30,10 @@ security:
     main:
       lazy: true
       provider: app_user_provider
+
+      login_throttling:
+        max_attempts: 3
+        interval: "10 minutes"
 
       # activate different ways to authenticate
       # https://symfony.com/doc/current/security.html#the-firewall
@@ -41,6 +46,13 @@ security:
   access_control:
     # - { path: ^/admin, roles: ROLE_ADMIN }
     # - { path: ^/profile, roles: ROLE_USER }
+    - {
+        path: ^/api/user/,
+        roles: [IS_AUTHENTICATED_FULLY, ROLE_USER],
+        methods: [PUT, PATCH, DELETE],
+      }
+
+    - { path: ^/api/user/, roles: [ROLE_ADMIN], methods: [GET] }
 
 when@test:
   security:

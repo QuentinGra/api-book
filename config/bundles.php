@@ -18,4 +18,6 @@ return [
     Nelmio\ApiDocBundle\NelmioApiDocBundle::class => ['all' => true],
     Twig\Extra\TwigExtraBundle\TwigExtraBundle::class => ['all' => true],
     Knp\Bundle\PaginatorBundle\KnpPaginatorBundle::class => ['all' => true],
+    Vich\UploaderBundle\VichUploaderBundle::class => ['all' => true],
+    Knp\Bundle\GaufretteBundle\KnpGaufretteBundle::class => ['all' => true],
 ];
