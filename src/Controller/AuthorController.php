@@ -67,7 +67,6 @@ class AuthorController extends AbstractController
         #[MapUploadedFile]
         ?UploadedFile $image
     ): JsonResponse {
-
         $author->setImage($image);
 
         $errors = $this->validator->validate($author);
@@ -86,7 +85,7 @@ class AuthorController extends AbstractController
     }
 
     #[Route('/{id}', name: '.update', methods: ['PUT', 'PATCH'])]
-    public function update(Request $request, ?Author $author,): JsonResponse
+    public function update(Request $request, ?Author $author): JsonResponse
     {
         if (!$author) {
             return $this->json([
@@ -119,7 +118,6 @@ class AuthorController extends AbstractController
         #[MapUploadedFile()]
         array|UploadedFile $image,
     ): JsonResponse {
-
         if (!$author) {
             return $this->json([
                 'status' => 'error',
