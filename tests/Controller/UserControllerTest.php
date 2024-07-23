@@ -35,25 +35,25 @@ class UserControllerTest extends WebTestCase
         return self::getContainer()->get(UserRepository::class)->findOneBy(['email' => 'user@test.com']);
     }
 
-    // public function testEndpointLogin(): void
-    // {
-    //     $data = [
-    //         'username' => 'admin@test.com',
-    //         'password' => 'Test1234!',
-    //     ];
+    public function testEndpointLogin(): void
+    {
+        $data = [
+            'username' => 'admin@test.com',
+            'password' => 'Test1234!',
+        ];
 
-    //     $this->client->request(
-    //         'POST',
-    //         '/api/login',
-    //         [],
-    //         [],
-    //         ['CONTENT_TYPE' => 'application/json'],
-    //         json_encode($data)
-    //     );
+        $this->client->request(
+            'POST',
+            '/api/login',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($data)
+        );
 
-    //     $this->assertResponseStatusCodeSame(204);
-    //     $this->assertResponseHasCookie('BEARER');
-    // }
+        $this->assertResponseStatusCodeSame(204);
+        $this->assertResponseHasCookie('BEARER');
+    }
 
     public function testEndpointIndexWithAdmin(): void
     {

@@ -1,0 +1,9 @@
+coverage:
+  status:
+    patch:
+      default:
+        target: auto
+        threshold: 20%
+
+ignore:
+  - "src/DataFixtures"
