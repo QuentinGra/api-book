@@ -36,7 +36,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-versions }}
-          extensions: mbstring, xml, ctype, iconv, intl, pdo, pdo_mysql, dom, filter, gd, iconv, json, mbstring, fileinfo
+          extensions: mbstring, openssl, xml, ctype, iconv, intl, pdo, pdo_mysql, dom, filter, gd, iconv, json, mbstring, fileinfo
           coverage: xdebug
         env:
           update: true
@@ -75,10 +75,16 @@ jobs:
         run: php vendor/bin/php-cs-fixer fix src
 
       ## -- Unit Test analysis ✨ —————————————————————————————————————————————————
+      - name: Generate keypair Token JWT
+        run: |
+          composer dump-env test
+          php bin/console lexik:jwt:generate-keypair
+
       - name: PHPUnit test for unit test application
         run: |
+          php bin/console ca:cl --env=test
           php bin/console doctrine:database:create --env=test
-          php bin/console doctrine:schema:update --env=test --force --complete
+          php bin/console doctrine:schema:update --env=test --force
           php bin/phpunit --testdox --coverage-clover=./phpunit-coverage.xml
 
       - name: Upload coverage reports to Codecov
