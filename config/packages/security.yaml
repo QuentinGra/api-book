@@ -47,12 +47,10 @@ security:
     # - { path: ^/admin, roles: ROLE_ADMIN }
     # - { path: ^/profile, roles: ROLE_USER }
     - {
-        path: ^/api/user/,
+        path: ^/api/user,
         roles: [IS_AUTHENTICATED_FULLY, ROLE_USER],
         methods: [PUT, PATCH, DELETE],
       }
-
-    - { path: ^/api/user/, roles: [ROLE_ADMIN], methods: [GET] }
 
 when@test:
   security:

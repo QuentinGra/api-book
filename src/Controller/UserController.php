@@ -30,6 +30,7 @@ class UserController extends AbstractController
     }
 
     #[Route('', name: '.index', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function index(Request $request): JsonResponse
     {
         $page = $request->get('page', 1);
@@ -46,6 +47,7 @@ class UserController extends AbstractController
     }
 
     #[Route('/{id}', name: '.show', methods: ['GET'])]
+    #[IsGranted('USER_OWNER', 'user', 'User not found', 404)]
     public function show(?User $user): JsonResponse
     {
         if (!$user) {
@@ -101,15 +103,15 @@ class UserController extends AbstractController
             'object_to_populate' => $user,
         ]);
 
-        if (isset($userData['password'])) {
-            $hashedPassword = $this->hasher->hashPassword($user, $userData['password']);
-            $user->setPassword($hashedPassword);
-        }
-
         $errors = $this->validator->validate($user);
 
         if (count($errors) > 0) {
             return $this->json($errors, 422);
+        }
+
+        if (isset($userData['password'])) {
+            $hashedPassword = $this->hasher->hashPassword($user, $userData['password']);
+            $user->setPassword($hashedPassword);
         }
 
         $this->em->persist($user);
