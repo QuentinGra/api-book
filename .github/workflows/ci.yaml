@@ -75,6 +75,9 @@ jobs:
         run: php vendor/bin/php-cs-fixer fix src
 
       ## -- Unit Test analysis ✨ —————————————————————————————————————————————————
+      - name: Generate keypair Token JWT
+        run: php bin/console lexik:jwt:generate-keypair
+        
       - name: PHPUnit test for unit test application
         run: |
           composer dump-env test
