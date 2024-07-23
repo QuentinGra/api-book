@@ -77,8 +77,10 @@ jobs:
       ## -- Unit Test analysis ✨ —————————————————————————————————————————————————
       - name: PHPUnit test for unit test application
         run: |
+          composer dump-env test
+          php bin/console ca:cl --env=test
           php bin/console doctrine:database:create --env=test
-          php bin/console doctrine:schema:update --env=test --force --complete
+          php bin/console doctrine:schema:update --env=test --force
           php bin/phpunit --testdox --coverage-clover=./phpunit-coverage.xml
 
       - name: Upload coverage reports to Codecov
