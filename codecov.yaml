@@ -1,9 +1,16 @@
 coverage:
+  round: down
+  range: "70...100"
   status:
     patch:
       default:
-        target: auto
+        target: 80%
         threshold: 20%
+
+comment:
+  require_head: true
+  require_base: true
+  require_changes: true
 
 ignore:
   - "src/DataFixtures"

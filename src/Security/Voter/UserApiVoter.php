@@ -31,7 +31,7 @@ class UserApiVoter extends Voter
             return false;
         }
 
-        if ($subject === $user) {
+        if ($subject === $user || in_array('ROLE_ADMIN', $user->getRoles())) {
             return true;
         }
 
