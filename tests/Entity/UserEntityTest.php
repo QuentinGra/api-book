@@ -4,6 +4,7 @@ namespace App\Tests\Entity;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
+use App\Tests\Utils\Providers\NameTrait;
 use App\Tests\Utils\TestTrait;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Liip\TestFixturesBundle\Services\DatabaseTools\ORMDatabaseTool;
@@ -12,6 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 class UserEntityTest extends KernelTestCase
 {
     use TestTrait;
+    use NameTrait;
 
     protected ?ORMDatabaseTool $databaseTool = null;
 
@@ -25,7 +27,7 @@ class UserEntityTest extends KernelTestCase
     public function testRepositoryCount(): void
     {
         $this->databaseTool->loadAliceFixture([
-            \dirname(__DIR__).'/Fixtures/UserFixtures.yaml',
+            \dirname(__DIR__) . '/Fixtures/UserFixtures.yaml',
         ]);
 
         $userRepo = self::getContainer()->get(UserRepository::class);
@@ -119,7 +121,7 @@ class UserEntityTest extends KernelTestCase
                 'number' => 1,
             ],
             'max_length' => [
-                'email' => str_repeat('a', 180).'@test.com',
+                'email' => str_repeat('a', 180) . '@test.com',
                 'number' => 1,
             ],
             'empty' => [
@@ -154,20 +156,6 @@ class UserEntityTest extends KernelTestCase
             ],
             'empty' => [
                 'password' => '',
-                'number' => 1,
-            ],
-        ];
-    }
-
-    public function provideName(): array
-    {
-        return [
-            'max_length' => [
-                'name' => str_repeat('a', 256),
-                'number' => 1,
-            ],
-            'empty' => [
-                'name' => '',
                 'number' => 1,
             ],
         ];
