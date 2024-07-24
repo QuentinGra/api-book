@@ -10,7 +10,7 @@ trait EnableTrait
             'empty' => [
                 'enable' => null,
                 'number' => 1,
-            ]
+            ],
         ];
     }
 }

@@ -36,7 +36,7 @@ class AuthorEntityTest extends KernelTestCase
 
         $authors = $authorRepo->findAll();
 
-        $this->assertCount(5, $authors);
+        $this->assertCount(6, $authors);
     }
 
     private function getEntity(): Author
@@ -66,7 +66,7 @@ class AuthorEntityTest extends KernelTestCase
     /**
      * @dataProvider provideEnable
      */
-    public function testInvalideEnable(bool|null $enable): void
+    public function testInvalideEnable(?bool $enable): void
     {
         $author = $this->getEntity()
             ->setEnable($enable);
@@ -78,9 +78,9 @@ class AuthorEntityTest extends KernelTestCase
     {
         $repo = self::getContainer()->get(AuthorRepository::class);
 
-        $authors = $repo->findAllWithPagination(1, 5);
+        $authors = $repo->findAllWithPagination(1, 6);
 
-        $this->assertCount(5, $authors);
+        $this->assertCount(6, $authors);
     }
 
     public function testfindAllWithPaginationWithInvalidArgument(): void
@@ -89,7 +89,7 @@ class AuthorEntityTest extends KernelTestCase
 
         $this->expectException(\TypeError::class);
 
-        $repo->findAllWithPagination('test', 5);
+        $repo->findAllWithPagination('test', 6);
     }
 
     public function tearDown(): void

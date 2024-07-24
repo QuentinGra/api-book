@@ -3,3 +3,8 @@ App\Entity\Author:
     firstName: <firstName()>
     lastName: <lastName()>
     enable: true
+
+  author_test:
+    firstName: test
+    lastName: test
+    enable: true

@@ -87,6 +87,14 @@ class UserControllerTest extends WebTestCase
         $this->assertResponseStatusCodeSame(404);
     }
 
+    public function testEndpointShowWithAdminNotOwner(): void
+    {
+        $this->client->loginUser($this->getAdminUser());
+        $this->client->request('GET', '/api/user/' . $this->getUser()->getId());
+
+        $this->assertResponseStatusCodeSame(200);
+    }
+
     public function testEndpointShowWithUserOwner(): void
     {
         $this->client->loginUser($this->getUser());
@@ -175,6 +183,25 @@ class UserControllerTest extends WebTestCase
         $this->assertResponseStatusCodeSame(404);
     }
 
+    public function testEndpointUpdateWithAdminNotOwner(): void
+    {
+        $data = [
+            'lastName' => 'test',
+        ];
+
+        $this->client->loginUser($this->getAdminUser());
+        $this->client->request(
+            'PATCH',
+            '/api/user/' . $this->getUser()->getId(),
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($data)
+        );
+
+        $this->assertResponseStatusCodeSame(201);
+    }
+
     public function testEndpointUpdateWithUserOwner(): void
     {
         $data = ['lastName' => 'test'];
@@ -195,7 +222,7 @@ class UserControllerTest extends WebTestCase
     public function testEndpointDeleteWithBadId(): void
     {
         $this->client->loginUser($this->getUser());
-        $this->client->request('GET', '/api/user/0');
+        $this->client->request('DELETE', '/api/user/0');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -203,15 +230,23 @@ class UserControllerTest extends WebTestCase
     public function testEndpointDeleteWithUserNotOwner(): void
     {
         $this->client->loginUser($this->getUser());
-        $this->client->request('GET', '/api/user/' . $this->getAdminUser()->getId());
+        $this->client->request('DELETE', '/api/user/' . $this->getAdminUser()->getId());
 
         $this->assertResponseStatusCodeSame(404);
+    }
+
+    public function testEndpointDeleteWithAdminNotOwner(): void
+    {
+        $this->client->loginUser($this->getAdminUser());
+        $this->client->request('DELETE', '/api/user/' . $this->getUser()->getId());
+
+        $this->assertResponseStatusCodeSame(200);
     }
 
     public function testEndpointDeleteWithUserOwner(): void
     {
         $this->client->loginUser($this->getUser());
-        $this->client->request('GET', '/api/user/' . $this->getUser()->getId());
+        $this->client->request('DELETE', '/api/user/' . $this->getUser()->getId());
 
         $this->assertResponseStatusCodeSame(200);
     }

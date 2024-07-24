@@ -65,8 +65,15 @@ class AuthorController extends AbstractController
         #[MapRequestPayload]
         Author $author,
         #[MapUploadedFile]
-        ?UploadedFile $image
+        array|UploadedFile $image
     ): JsonResponse {
+        if (!$image instanceof UploadedFile) {
+            return $this->json([
+                'status' => 'error',
+                'message' => 'Image not found',
+            ], 404);
+        }
+
         $author->setImage($image);
 
         $errors = $this->validator->validate($author);
