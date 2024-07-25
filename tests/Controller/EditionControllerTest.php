@@ -180,6 +180,23 @@ class EditionControllerTest extends WebTestCase
         $this->assertResponseStatusCodeSame(201);
     }
 
+    public function testEndpointUpdateWithBadCredentialsWithAdmin(): void
+    {
+        $data = ['name' => str_repeat('a', 256)];
+
+        $this->client->loginUser($this->getAdminUser());
+        $this->client->request(
+            'PATCH',
+            '/api/edition/' . $this->getEdition()->getId(),
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($data)
+        );
+
+        $this->assertResponseStatusCodeSame(422);
+    }
+
     public function testEndpointUpdateWithUser(): void
     {
         $data = ['name' => 'lorem'];
