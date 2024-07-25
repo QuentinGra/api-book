@@ -1,0 +1,10 @@
+App\Entity\Edition:
+  edition_{1..5}:
+    name (unique): <firstName()>
+    description: <paragraph()>
+    enable: true
+
+  edition_test:
+    name: test
+    description: <paragraph()>
+    enable: true

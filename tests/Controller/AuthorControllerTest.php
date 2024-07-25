@@ -24,8 +24,8 @@ class AuthorControllerTest extends WebTestCase
         $this->databaseTool = self::getContainer()->get(DatabaseToolCollection::class)->get();
 
         $this->databaseTool->loadAliceFixture([
-            \dirname(__DIR__).'/Fixtures/UserFixtures.yaml',
-            \dirname(__DIR__).'/Fixtures/AuthorFixtures.yaml',
+            \dirname(__DIR__) . '/Fixtures/UserFixtures.yaml',
+            \dirname(__DIR__) . '/Fixtures/AuthorFixtures.yaml',
         ]);
     }
 
@@ -71,7 +71,7 @@ class AuthorControllerTest extends WebTestCase
     public function testEndpointShowWithAdmin(): void
     {
         $this->client->loginUser($this->getAdminUser());
-        $this->client->request('GET', '/api/author/'.$this->getAuthor()->getId());
+        $this->client->request('GET', '/api/author/' . $this->getAuthor()->getId());
 
         $this->assertResponseStatusCodeSame(200);
     }
@@ -79,7 +79,7 @@ class AuthorControllerTest extends WebTestCase
     public function testEndpointShowWithUser(): void
     {
         $this->client->loginUser($this->getUser());
-        $this->client->request('GET', '/api/author/'.$this->getAuthor()->getId());
+        $this->client->request('GET', '/api/author/' . $this->getAuthor()->getId());
 
         $this->assertResponseStatusCodeSame(200);
     }
@@ -98,7 +98,7 @@ class AuthorControllerTest extends WebTestCase
             '/api/author/create',
             $data,
             [
-                'image' => new UploadedFile(\dirname(__DIR__).'/Assets/Images/sylius.png', 'sylius.png'),
+                'image' => new UploadedFile(\dirname(__DIR__) . '/Assets/Images/sylius.png', 'sylius.png'),
             ]
         );
 
@@ -119,7 +119,7 @@ class AuthorControllerTest extends WebTestCase
             '/api/author/create',
             $data,
             [
-                'image' => new UploadedFile(\dirname(__DIR__).'/Assets/Images/sylius.png', 'sylius.png'),
+                'image' => new UploadedFile(\dirname(__DIR__) . '/Assets/Images/sylius.png', 'sylius.png'),
             ]
         );
 
@@ -140,7 +140,7 @@ class AuthorControllerTest extends WebTestCase
             '/api/author/create',
             $data,
             [
-                'image' => new UploadedFile(\dirname(__DIR__).'/Assets/Images/sylius.png', 'sylius.png'),
+                'image' => new UploadedFile(\dirname(__DIR__) . '/Assets/Images/sylius.png', 'sylius.png'),
             ]
         );
 
@@ -171,7 +171,7 @@ class AuthorControllerTest extends WebTestCase
         $this->client->loginUser($this->getAdminUser());
         $this->client->request(
             'PATCH',
-            '/api/author/'.$this->getAuthor()->getId(),
+            '/api/author/' . $this->getAuthor()->getId(),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -181,6 +181,23 @@ class AuthorControllerTest extends WebTestCase
         $this->assertResponseStatusCodeSame(201);
     }
 
+    public function testEndpointUpdateWithBadCredentialsWithAdmin(): void
+    {
+        $data = ['lastName' => str_repeat('a', 256)];
+
+        $this->client->loginUser($this->getAdminUser());
+        $this->client->request(
+            'PATCH',
+            '/api/author/' . $this->getAuthor()->getId(),
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($data)
+        );
+
+        $this->assertResponseStatusCodeSame(422);
+    }
+
     public function testEndpointUpdateWithUser(): void
     {
         $data = ['lastName' => 'test'];
@@ -188,7 +205,7 @@ class AuthorControllerTest extends WebTestCase
         $this->client->loginUser($this->getUser());
         $this->client->request(
             'PATCH',
-            '/api/author/'.$this->getAuthor()->getId(),
+            '/api/author/' . $this->getAuthor()->getId(),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -206,7 +223,7 @@ class AuthorControllerTest extends WebTestCase
             '/api/author/0/image',
             [],
             [
-                'image' => new UploadedFile(\dirname(__DIR__).'/Assets/Images/sylius.png', 'sylius.png'),
+                'image' => new UploadedFile(\dirname(__DIR__) . '/Assets/Images/sylius.png', 'sylius.png'),
             ]
         );
 
@@ -218,10 +235,10 @@ class AuthorControllerTest extends WebTestCase
         $this->client->loginUser($this->getAdminUser());
         $this->client->request(
             'POST',
-            '/api/author/'.$this->getAuthor()->getId().'/image',
+            '/api/author/' . $this->getAuthor()->getId() . '/image',
             [],
             [
-                'image' => new UploadedFile(\dirname(__DIR__).'/Assets/Images/sylius.png', 'sylius.png'),
+                'image' => new UploadedFile(\dirname(__DIR__) . '/Assets/Images/sylius.png', 'sylius.png'),
             ]
         );
 
@@ -233,10 +250,10 @@ class AuthorControllerTest extends WebTestCase
         $this->client->loginUser($this->getUser());
         $this->client->request(
             'POST',
-            '/api/author/'.$this->getAuthor()->getId().'/image',
+            '/api/author/' . $this->getAuthor()->getId() . '/image',
             [],
             [
-                'image' => new UploadedFile(\dirname(__DIR__).'/Assets/Images/sylius.png', 'sylius.png'),
+                'image' => new UploadedFile(\dirname(__DIR__) . '/Assets/Images/sylius.png', 'sylius.png'),
             ]
         );
 
@@ -254,7 +271,7 @@ class AuthorControllerTest extends WebTestCase
     public function testEndpointDeleteWithUser(): void
     {
         $this->client->loginUser($this->getUser());
-        $this->client->request('DELETE', '/api/author/'.$this->getAuthor()->getId());
+        $this->client->request('DELETE', '/api/author/' . $this->getAuthor()->getId());
 
         $this->assertResponseStatusCodeSame(403);
     }
@@ -262,7 +279,7 @@ class AuthorControllerTest extends WebTestCase
     public function testEndpointDeleteWithAdminUser(): void
     {
         $this->client->loginUser($this->getAdminUser());
-        $this->client->request('DELETE', '/api/author/'.$this->getAuthor()->getId());
+        $this->client->request('DELETE', '/api/author/' . $this->getAuthor()->getId());
 
         $this->assertResponseStatusCodeSame(200);
     }

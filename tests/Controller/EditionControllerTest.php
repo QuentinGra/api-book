@@ -2,14 +2,16 @@
 
 namespace App\Tests\Controller;
 
+use App\Entity\Edition;
 use App\Entity\User;
+use App\Repository\EditionRepository;
 use App\Repository\UserRepository;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Liip\TestFixturesBundle\Services\DatabaseTools\ORMDatabaseTool;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class UserControllerTest extends WebTestCase
+class EditionControllerTest extends WebTestCase
 {
     private ?KernelBrowser $client = null;
     private ?ORMDatabaseTool $databaseTool = null;
@@ -22,6 +24,7 @@ class UserControllerTest extends WebTestCase
 
         $this->databaseTool->loadAliceFixture([
             \dirname(__DIR__) . '/Fixtures/UserFixtures.yaml',
+            \dirname(__DIR__) . '/Fixtures/EditionFixtures.yaml',
         ]);
     }
 
@@ -35,30 +38,15 @@ class UserControllerTest extends WebTestCase
         return self::getContainer()->get(UserRepository::class)->findOneBy(['email' => 'user@test.com']);
     }
 
-    public function testEndpointLogin(): void
+    private function getEdition(): Edition
     {
-        $data = [
-            'username' => 'admin@test.com',
-            'password' => 'Test1234!',
-        ];
-
-        $this->client->request(
-            'POST',
-            '/api/login',
-            [],
-            [],
-            ['CONTENT_TYPE' => 'application/json'],
-            json_encode($data)
-        );
-
-        $this->assertResponseStatusCodeSame(204);
-        $this->assertResponseHasCookie('BEARER');
+        return self::getContainer()->get(EditionRepository::class)->findOneBy(['name' => 'test']);
     }
 
     public function testEndpointIndexWithAdmin(): void
     {
         $this->client->loginUser($this->getAdminUser());
-        $this->client->request('GET', '/api/user');
+        $this->client->request('GET', '/api/edition');
 
         $this->assertResponseStatusCodeSame(200);
     }
@@ -66,55 +54,47 @@ class UserControllerTest extends WebTestCase
     public function testEndpointIndexWithUser(): void
     {
         $this->client->loginUser($this->getUser());
-        $this->client->request('GET', '/api/user');
+        $this->client->request('GET', '/api/edition');
 
-        $this->assertResponseStatusCodeSame(403);
+        $this->assertResponseStatusCodeSame(200);
     }
 
     public function testEndpointShowWithBadId(): void
     {
         $this->client->loginUser($this->getUser());
-        $this->client->request('GET', '/api/user/0');
+        $this->client->request('GET', '/api/edition/0');
 
         $this->assertResponseStatusCodeSame(404);
     }
 
-    public function testEndpointShowWithUserNotOwner(): void
-    {
-        $this->client->loginUser($this->getUser());
-        $this->client->request('GET', '/api/user/' . $this->getAdminUser()->getId());
-
-        $this->assertResponseStatusCodeSame(404);
-    }
-
-    public function testEndpointShowWithAdminNotOwner(): void
+    public function testEndpointShowWithAdmin(): void
     {
         $this->client->loginUser($this->getAdminUser());
-        $this->client->request('GET', '/api/user/' . $this->getUser()->getId());
+        $this->client->request('GET', '/api/edition/' . $this->getEdition()->getId());
 
         $this->assertResponseStatusCodeSame(200);
     }
 
-    public function testEndpointShowWithUserOwner(): void
+    public function testEndpointShowWithUser(): void
     {
         $this->client->loginUser($this->getUser());
-        $this->client->request('GET', '/api/user/' . $this->getUser()->getId());
+        $this->client->request('GET', '/api/edition/' . $this->getEdition()->getId());
 
         $this->assertResponseStatusCodeSame(200);
     }
 
-    public function testEndpointCreateWithGoodCredentials(): void
+    public function testEndpointCreateWithGoodCredentialsWithAdmin(): void
     {
         $data = [
-            'email' => 'admin@hotmail.com',
-            'password' => 'Test1234!',
-            'firstName' => 'Test',
-            'lastName' => 'Test',
+            'name' => 'lorem',
+            'description' => 'lorem',
+            'enable' => true,
         ];
 
+        $this->client->loginUser($this->getAdminUser());
         $this->client->request(
             'POST',
-            '/api/user/create',
+            '/api/edition/create',
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -124,15 +104,36 @@ class UserControllerTest extends WebTestCase
         $this->assertResponseStatusCodeSame(201);
     }
 
-    public function testEndpointCreateWithBadCredentials(): void
+    public function testEndpointCreateWithGoodCredentialsWithUser(): void
     {
         $data = [
-            'email' => 'admin@hotmail.com',
-            'password' => 'Test1234!',
-            'firstName' => str_repeat('a', 256),
-            'lastName' => 'Test',
+            'name' => 'lorem',
+            'description' => 'lorem',
+            'enable' => true,
         ];
 
+        $this->client->loginUser($this->getUser());
+        $this->client->request(
+            'POST',
+            '/api/edition/create',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($data)
+        );
+
+        $this->assertResponseStatusCodeSame(403);
+    }
+
+    public function testEndpointCreateWithBadCredentialsWithAdmin(): void
+    {
+        $data = [
+            'name' => str_repeat('a', 256),
+            'description' => 'lorem',
+            'enable' => true,
+        ];
+
+        $this->client->loginUser($this->getAdminUser());
         $this->client->request(
             'POST',
             '/api/user/create',
@@ -147,52 +148,46 @@ class UserControllerTest extends WebTestCase
 
     public function testEndpointUpdateWithBadId(): void
     {
-        $data = [
-            'lastName' => 'test',
-        ];
-
-        $this->client->loginUser($this->getUser());
-        $this->client->request(
-            'PATCH',
-            '/api/user/0',
-            [],
-            [],
-            ['CONTENT_TYPE' => 'application/json'],
-            json_encode($data)
-        );
-
-        $this->assertResponseStatusCodeSame(404);
-    }
-
-    public function testEndpointUpdateWithUserNotOwner(): void
-    {
-        $data = [
-            'lastName' => 'test',
-        ];
-
-        $this->client->loginUser($this->getUser());
-        $this->client->request(
-            'PATCH',
-            '/api/user/' . $this->getAdminUser()->getId(),
-            [],
-            [],
-            ['CONTENT_TYPE' => 'application/json'],
-            json_encode($data)
-        );
-
-        $this->assertResponseStatusCodeSame(404);
-    }
-
-    public function testEndpointUpdateWithBadCredentialsWithAdminNotOwner(): void
-    {
-        $data = [
-            'lastName' => str_repeat('a', 256),
-        ];
+        $data = ['name' => 'lorem'];
 
         $this->client->loginUser($this->getAdminUser());
         $this->client->request(
             'PATCH',
-            '/api/user/' . $this->getUser()->getId(),
+            '/api/edition/0',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($data)
+        );
+
+        $this->assertResponseStatusCodeSame(404);
+    }
+
+    public function testEndpointUpdateWithAdmin(): void
+    {
+        $data = ['name' => 'lorem'];
+
+        $this->client->loginUser($this->getAdminUser());
+        $this->client->request(
+            'PATCH',
+            '/api/edition/' . $this->getEdition()->getId(),
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($data)
+        );
+
+        $this->assertResponseStatusCodeSame(201);
+    }
+
+    public function testEndpointUpdateWithBadCredentialsWithAdmin(): void
+    {
+        $data = ['name' => str_repeat('a', 256)];
+
+        $this->client->loginUser($this->getAdminUser());
+        $this->client->request(
+            'PATCH',
+            '/api/edition/' . $this->getEdition()->getId(),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -202,70 +197,43 @@ class UserControllerTest extends WebTestCase
         $this->assertResponseStatusCodeSame(422);
     }
 
-    public function testEndpointUpdateWithAdminNotOwner(): void
+    public function testEndpointUpdateWithUser(): void
     {
-        $data = [
-            'lastName' => 'test',
-        ];
-
-        $this->client->loginUser($this->getAdminUser());
-        $this->client->request(
-            'PATCH',
-            '/api/user/' . $this->getUser()->getId(),
-            [],
-            [],
-            ['CONTENT_TYPE' => 'application/json'],
-            json_encode($data)
-        );
-
-        $this->assertResponseStatusCodeSame(201);
-    }
-
-    public function testEndpointUpdateWithUserOwner(): void
-    {
-        $data = ['lastName' => 'test'];
+        $data = ['name' => 'lorem'];
 
         $this->client->loginUser($this->getUser());
         $this->client->request(
             'PATCH',
-            '/api/user/' . $this->getUser()->getId(),
+            '/api/edition/' . $this->getEdition()->getId(),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
             json_encode($data)
         );
 
-        $this->assertResponseStatusCodeSame(201);
+        $this->assertResponseStatusCodeSame(403);
     }
 
     public function testEndpointDeleteWithBadId(): void
     {
-        $this->client->loginUser($this->getUser());
-        $this->client->request('DELETE', '/api/user/0');
+        $this->client->loginUser($this->getAdminUser());
+        $this->client->request('DELETE', '/api/edition/0');
 
         $this->assertResponseStatusCodeSame(404);
     }
 
-    public function testEndpointDeleteWithUserNotOwner(): void
+    public function testEndpointDeleteWithUser(): void
     {
         $this->client->loginUser($this->getUser());
-        $this->client->request('DELETE', '/api/user/' . $this->getAdminUser()->getId());
+        $this->client->request('DELETE', '/api/edition/' . $this->getEdition()->getId());
 
-        $this->assertResponseStatusCodeSame(404);
+        $this->assertResponseStatusCodeSame(403);
     }
 
-    public function testEndpointDeleteWithAdminNotOwner(): void
+    public function testEndpointDeleteWithAdminUser(): void
     {
         $this->client->loginUser($this->getAdminUser());
-        $this->client->request('DELETE', '/api/user/' . $this->getUser()->getId());
-
-        $this->assertResponseStatusCodeSame(200);
-    }
-
-    public function testEndpointDeleteWithUserOwner(): void
-    {
-        $this->client->loginUser($this->getUser());
-        $this->client->request('DELETE', '/api/user/' . $this->getUser()->getId());
+        $this->client->request('DELETE', '/api/edition/' . $this->getEdition()->getId());
 
         $this->assertResponseStatusCodeSame(200);
     }
