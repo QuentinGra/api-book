@@ -71,7 +71,7 @@ jobs:
           php bin/console about
 
       ## —— Coding standards ✨ ————————————————————————————————————————————————
-      - name: Coding standards checks (php_codesniffer + php-cs-fixer)
+      - name: Coding standards checks (php-cs-fixer)
         run: php vendor/bin/php-cs-fixer fix src
 
       ## -- Unit Test analysis ✨ —————————————————————————————————————————————————
