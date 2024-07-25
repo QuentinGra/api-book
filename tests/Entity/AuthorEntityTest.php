@@ -44,6 +44,7 @@ class AuthorEntityTest extends KernelTestCase
         return (new Author())
             ->setFirstName('test')
             ->setLastName('test')
+            ->setDescription('test')
             ->setEnable(false);
     }
 

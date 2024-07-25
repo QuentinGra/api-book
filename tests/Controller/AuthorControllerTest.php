@@ -98,7 +98,7 @@ class AuthorControllerTest extends WebTestCase
             '/api/author/create',
             $data,
             [
-                'image' => new UploadedFile(\dirname(__DIR__) . '/Assets/Images/sylius.png', 'sylius.png')
+                'image' => new UploadedFile(\dirname(__DIR__) . '/Assets/Images/sylius.png', 'sylius.png'),
             ]
         );
 
@@ -119,7 +119,7 @@ class AuthorControllerTest extends WebTestCase
             '/api/author/create',
             $data,
             [
-                'image' => new UploadedFile(\dirname(__DIR__) . '/Assets/Images/sylius.png', 'sylius.png')
+                'image' => new UploadedFile(\dirname(__DIR__) . '/Assets/Images/sylius.png', 'sylius.png'),
             ]
         );
 
@@ -140,7 +140,7 @@ class AuthorControllerTest extends WebTestCase
             '/api/author/create',
             $data,
             [
-                'image' => new UploadedFile(\dirname(__DIR__) . '/Assets/Images/sylius.png', 'sylius.png')
+                'image' => new UploadedFile(\dirname(__DIR__) . '/Assets/Images/sylius.png', 'sylius.png'),
             ]
         );
 
@@ -181,6 +181,23 @@ class AuthorControllerTest extends WebTestCase
         $this->assertResponseStatusCodeSame(201);
     }
 
+    public function testEndpointUpdateWithBadCredentialsWithAdmin(): void
+    {
+        $data = ['lastName' => str_repeat('a', 256)];
+
+        $this->client->loginUser($this->getAdminUser());
+        $this->client->request(
+            'PATCH',
+            '/api/author/' . $this->getAuthor()->getId(),
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($data)
+        );
+
+        $this->assertResponseStatusCodeSame(422);
+    }
+
     public function testEndpointUpdateWithUser(): void
     {
         $data = ['lastName' => 'test'];
@@ -200,14 +217,13 @@ class AuthorControllerTest extends WebTestCase
 
     public function testEndpointUpdateImageWithBadId(): void
     {
-
         $this->client->loginUser($this->getAdminUser());
         $this->client->request(
             'POST',
             '/api/author/0/image',
             [],
             [
-                'image' => new UploadedFile(\dirname(__DIR__) . '/Assets/Images/sylius.png', 'sylius.png')
+                'image' => new UploadedFile(\dirname(__DIR__) . '/Assets/Images/sylius.png', 'sylius.png'),
             ]
         );
 
@@ -216,14 +232,13 @@ class AuthorControllerTest extends WebTestCase
 
     public function testEndpointUpdateImageWithAdmin(): void
     {
-
         $this->client->loginUser($this->getAdminUser());
         $this->client->request(
             'POST',
             '/api/author/' . $this->getAuthor()->getId() . '/image',
             [],
             [
-                'image' => new UploadedFile(\dirname(__DIR__) . '/Assets/Images/sylius.png', 'sylius.png')
+                'image' => new UploadedFile(\dirname(__DIR__) . '/Assets/Images/sylius.png', 'sylius.png'),
             ]
         );
 
@@ -232,14 +247,13 @@ class AuthorControllerTest extends WebTestCase
 
     public function testEndpointUpdateImageWithUser(): void
     {
-
         $this->client->loginUser($this->getUser());
         $this->client->request(
             'POST',
             '/api/author/' . $this->getAuthor()->getId() . '/image',
             [],
             [
-                'image' => new UploadedFile(\dirname(__DIR__) . '/Assets/Images/sylius.png', 'sylius.png')
+                'image' => new UploadedFile(\dirname(__DIR__) . '/Assets/Images/sylius.png', 'sylius.png'),
             ]
         );
 
