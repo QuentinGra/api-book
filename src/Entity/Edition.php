@@ -13,6 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: EditionRepository::class)]
 #[UniqueEntity(fields: ['name'], message: 'Une maison d\'édition existe déjàs avec ce nom')]
+#[ORM\HasLifecycleCallbacks]
 class Edition
 {
     use DateTimeTrait;
