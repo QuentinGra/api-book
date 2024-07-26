@@ -23,8 +23,8 @@ class CategoryControllerTest extends WebTestCase
         $this->databaseTool = self::getContainer()->get(DatabaseToolCollection::class)->get();
 
         $this->databaseTool->loadAliceFixture([
-            \dirname(__DIR__) . '/Fixtures/UserFixtures.yaml',
-            \dirname(__DIR__) . '/Fixtures/CategoryFixtures.yaml',
+            \dirname(__DIR__).'/Fixtures/UserFixtures.yaml',
+            \dirname(__DIR__).'/Fixtures/CategoryFixtures.yaml',
         ]);
     }
 
@@ -70,7 +70,7 @@ class CategoryControllerTest extends WebTestCase
     public function testEndpointShowWithAdmin(): void
     {
         $this->client->loginUser($this->getAdminUser());
-        $this->client->request('GET', '/api/category/' . $this->getCategory()->getId());
+        $this->client->request('GET', '/api/category/'.$this->getCategory()->getId());
 
         $this->assertResponseStatusCodeSame(200);
     }
@@ -78,7 +78,7 @@ class CategoryControllerTest extends WebTestCase
     public function testEndpointShowWithUser(): void
     {
         $this->client->loginUser($this->getUser());
-        $this->client->request('GET', '/api/category/' . $this->getCategory()->getId());
+        $this->client->request('GET', '/api/category/'.$this->getCategory()->getId());
 
         $this->assertResponseStatusCodeSame(200);
     }
@@ -170,7 +170,7 @@ class CategoryControllerTest extends WebTestCase
         $this->client->loginUser($this->getAdminUser());
         $this->client->request(
             'PATCH',
-            '/api/category/' . $this->getCategory()->getId(),
+            '/api/category/'.$this->getCategory()->getId(),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -187,7 +187,7 @@ class CategoryControllerTest extends WebTestCase
         $this->client->loginUser($this->getAdminUser());
         $this->client->request(
             'PATCH',
-            '/api/category/' . $this->getCategory()->getId(),
+            '/api/category/'.$this->getCategory()->getId(),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -204,7 +204,7 @@ class CategoryControllerTest extends WebTestCase
         $this->client->loginUser($this->getUser());
         $this->client->request(
             'PATCH',
-            '/api/category/' . $this->getCategory()->getId(),
+            '/api/category/'.$this->getCategory()->getId(),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -225,7 +225,7 @@ class CategoryControllerTest extends WebTestCase
     public function testEndpointDeleteWithUser(): void
     {
         $this->client->loginUser($this->getUser());
-        $this->client->request('DELETE', '/api/category/' . $this->getCategory()->getId());
+        $this->client->request('DELETE', '/api/category/'.$this->getCategory()->getId());
 
         $this->assertResponseStatusCodeSame(403);
     }
@@ -233,7 +233,7 @@ class CategoryControllerTest extends WebTestCase
     public function testEndpointDeleteWithAdminUser(): void
     {
         $this->client->loginUser($this->getAdminUser());
-        $this->client->request('DELETE', '/api/category/' . $this->getCategory()->getId());
+        $this->client->request('DELETE', '/api/category/'.$this->getCategory()->getId());
 
         $this->assertResponseStatusCodeSame(200);
     }

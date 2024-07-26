@@ -29,7 +29,7 @@ class CategoryEntityTest extends KernelTestCase
     public function testRepositoryCount(): void
     {
         $this->databaseTool->loadAliceFixture([
-            \dirname(__DIR__) . '/Fixtures/CategoryFixtures.yaml',
+            \dirname(__DIR__).'/Fixtures/CategoryFixtures.yaml',
         ]);
 
         $categoryRepo = self::getContainer()->get(CategoryRepository::class);

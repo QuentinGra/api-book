@@ -61,7 +61,6 @@ class EditionController extends AbstractController
         #[MapRequestPayload]
         Edition $edition,
     ): JsonResponse {
-
         $errors = $this->validator->validate($edition);
 
         if (count($errors) > 0) {

@@ -21,7 +21,7 @@ class UserControllerTest extends WebTestCase
         $this->databaseTool = self::getContainer()->get(DatabaseToolCollection::class)->get();
 
         $this->databaseTool->loadAliceFixture([
-            \dirname(__DIR__) . '/Fixtures/UserFixtures.yaml',
+            \dirname(__DIR__).'/Fixtures/UserFixtures.yaml',
         ]);
     }
 
@@ -82,7 +82,7 @@ class UserControllerTest extends WebTestCase
     public function testEndpointShowWithUserNotOwner(): void
     {
         $this->client->loginUser($this->getUser());
-        $this->client->request('GET', '/api/user/' . $this->getAdminUser()->getId());
+        $this->client->request('GET', '/api/user/'.$this->getAdminUser()->getId());
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -90,7 +90,7 @@ class UserControllerTest extends WebTestCase
     public function testEndpointShowWithAdminNotOwner(): void
     {
         $this->client->loginUser($this->getAdminUser());
-        $this->client->request('GET', '/api/user/' . $this->getUser()->getId());
+        $this->client->request('GET', '/api/user/'.$this->getUser()->getId());
 
         $this->assertResponseStatusCodeSame(200);
     }
@@ -98,7 +98,7 @@ class UserControllerTest extends WebTestCase
     public function testEndpointShowWithUserOwner(): void
     {
         $this->client->loginUser($this->getUser());
-        $this->client->request('GET', '/api/user/' . $this->getUser()->getId());
+        $this->client->request('GET', '/api/user/'.$this->getUser()->getId());
 
         $this->assertResponseStatusCodeSame(200);
     }
@@ -173,7 +173,7 @@ class UserControllerTest extends WebTestCase
         $this->client->loginUser($this->getUser());
         $this->client->request(
             'PATCH',
-            '/api/user/' . $this->getAdminUser()->getId(),
+            '/api/user/'.$this->getAdminUser()->getId(),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -192,7 +192,7 @@ class UserControllerTest extends WebTestCase
         $this->client->loginUser($this->getAdminUser());
         $this->client->request(
             'PATCH',
-            '/api/user/' . $this->getUser()->getId(),
+            '/api/user/'.$this->getUser()->getId(),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -211,7 +211,7 @@ class UserControllerTest extends WebTestCase
         $this->client->loginUser($this->getAdminUser());
         $this->client->request(
             'PATCH',
-            '/api/user/' . $this->getUser()->getId(),
+            '/api/user/'.$this->getUser()->getId(),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -228,7 +228,7 @@ class UserControllerTest extends WebTestCase
         $this->client->loginUser($this->getUser());
         $this->client->request(
             'PATCH',
-            '/api/user/' . $this->getUser()->getId(),
+            '/api/user/'.$this->getUser()->getId(),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -249,7 +249,7 @@ class UserControllerTest extends WebTestCase
     public function testEndpointDeleteWithUserNotOwner(): void
     {
         $this->client->loginUser($this->getUser());
-        $this->client->request('DELETE', '/api/user/' . $this->getAdminUser()->getId());
+        $this->client->request('DELETE', '/api/user/'.$this->getAdminUser()->getId());
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -257,7 +257,7 @@ class UserControllerTest extends WebTestCase
     public function testEndpointDeleteWithAdminNotOwner(): void
     {
         $this->client->loginUser($this->getAdminUser());
-        $this->client->request('DELETE', '/api/user/' . $this->getUser()->getId());
+        $this->client->request('DELETE', '/api/user/'.$this->getUser()->getId());
 
         $this->assertResponseStatusCodeSame(200);
     }
@@ -265,7 +265,7 @@ class UserControllerTest extends WebTestCase
     public function testEndpointDeleteWithUserOwner(): void
     {
         $this->client->loginUser($this->getUser());
-        $this->client->request('DELETE', '/api/user/' . $this->getUser()->getId());
+        $this->client->request('DELETE', '/api/user/'.$this->getUser()->getId());
 
         $this->assertResponseStatusCodeSame(200);
     }

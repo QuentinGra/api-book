@@ -29,7 +29,7 @@ class EditionEntityTest extends KernelTestCase
     public function testRepositoryCount(): void
     {
         $this->databaseTool->loadAliceFixture([
-            \dirname(__DIR__) . '/Fixtures/EditionFixtures.yaml',
+            \dirname(__DIR__).'/Fixtures/EditionFixtures.yaml',
         ]);
 
         $editionRepo = self::getContainer()->get(EditionRepository::class);
@@ -91,7 +91,6 @@ class EditionEntityTest extends KernelTestCase
 
         $repo->findAllWithPagination('test', 6);
     }
-
 
     public function tearDown(): void
     {

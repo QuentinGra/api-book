@@ -61,7 +61,6 @@ class CategoryController extends AbstractController
         #[MapRequestPayload]
         Category $category,
     ): JsonResponse {
-
         $errors = $this->validator->validate($category);
 
         if (count($errors) > 0) {
