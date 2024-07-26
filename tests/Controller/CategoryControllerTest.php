@@ -2,16 +2,16 @@
 
 namespace App\Tests\Controller;
 
-use App\Entity\Edition;
+use App\Entity\Category;
 use App\Entity\User;
-use App\Repository\EditionRepository;
+use App\Repository\CategoryRepository;
 use App\Repository\UserRepository;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Liip\TestFixturesBundle\Services\DatabaseTools\ORMDatabaseTool;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class EditionControllerTest extends WebTestCase
+class CategoryControllerTest extends WebTestCase
 {
     private ?KernelBrowser $client = null;
     private ?ORMDatabaseTool $databaseTool = null;
@@ -24,7 +24,7 @@ class EditionControllerTest extends WebTestCase
 
         $this->databaseTool->loadAliceFixture([
             \dirname(__DIR__) . '/Fixtures/UserFixtures.yaml',
-            \dirname(__DIR__) . '/Fixtures/EditionFixtures.yaml',
+            \dirname(__DIR__) . '/Fixtures/CategoryFixtures.yaml',
         ]);
     }
 
@@ -38,15 +38,15 @@ class EditionControllerTest extends WebTestCase
         return self::getContainer()->get(UserRepository::class)->findOneBy(['email' => 'user@test.com']);
     }
 
-    private function getEdition(): Edition
+    private function getCategory(): Category
     {
-        return self::getContainer()->get(EditionRepository::class)->findOneBy(['name' => 'test']);
+        return self::getContainer()->get(CategoryRepository::class)->findOneBy(['name' => 'test']);
     }
 
     public function testEndpointIndexWithAdmin(): void
     {
         $this->client->loginUser($this->getAdminUser());
-        $this->client->request('GET', '/api/edition');
+        $this->client->request('GET', '/api/category');
 
         $this->assertResponseStatusCodeSame(200);
     }
@@ -54,7 +54,7 @@ class EditionControllerTest extends WebTestCase
     public function testEndpointIndexWithUser(): void
     {
         $this->client->loginUser($this->getUser());
-        $this->client->request('GET', '/api/edition');
+        $this->client->request('GET', '/api/category');
 
         $this->assertResponseStatusCodeSame(200);
     }
@@ -62,7 +62,7 @@ class EditionControllerTest extends WebTestCase
     public function testEndpointShowWithBadId(): void
     {
         $this->client->loginUser($this->getUser());
-        $this->client->request('GET', '/api/edition/0');
+        $this->client->request('GET', '/api/category/0');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -70,7 +70,7 @@ class EditionControllerTest extends WebTestCase
     public function testEndpointShowWithAdmin(): void
     {
         $this->client->loginUser($this->getAdminUser());
-        $this->client->request('GET', '/api/edition/' . $this->getEdition()->getId());
+        $this->client->request('GET', '/api/category/' . $this->getCategory()->getId());
 
         $this->assertResponseStatusCodeSame(200);
     }
@@ -78,7 +78,7 @@ class EditionControllerTest extends WebTestCase
     public function testEndpointShowWithUser(): void
     {
         $this->client->loginUser($this->getUser());
-        $this->client->request('GET', '/api/edition/' . $this->getEdition()->getId());
+        $this->client->request('GET', '/api/category/' . $this->getCategory()->getId());
 
         $this->assertResponseStatusCodeSame(200);
     }
@@ -94,7 +94,7 @@ class EditionControllerTest extends WebTestCase
         $this->client->loginUser($this->getAdminUser());
         $this->client->request(
             'POST',
-            '/api/edition/create',
+            '/api/category/create',
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -115,7 +115,7 @@ class EditionControllerTest extends WebTestCase
         $this->client->loginUser($this->getUser());
         $this->client->request(
             'POST',
-            '/api/edition/create',
+            '/api/category/create',
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -136,7 +136,7 @@ class EditionControllerTest extends WebTestCase
         $this->client->loginUser($this->getAdminUser());
         $this->client->request(
             'POST',
-            '/api/edition/create',
+            '/api/category/create',
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -153,7 +153,7 @@ class EditionControllerTest extends WebTestCase
         $this->client->loginUser($this->getAdminUser());
         $this->client->request(
             'PATCH',
-            '/api/edition/0',
+            '/api/category/0',
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -170,7 +170,7 @@ class EditionControllerTest extends WebTestCase
         $this->client->loginUser($this->getAdminUser());
         $this->client->request(
             'PATCH',
-            '/api/edition/' . $this->getEdition()->getId(),
+            '/api/category/' . $this->getCategory()->getId(),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -187,7 +187,7 @@ class EditionControllerTest extends WebTestCase
         $this->client->loginUser($this->getAdminUser());
         $this->client->request(
             'PATCH',
-            '/api/edition/' . $this->getEdition()->getId(),
+            '/api/category/' . $this->getCategory()->getId(),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -204,7 +204,7 @@ class EditionControllerTest extends WebTestCase
         $this->client->loginUser($this->getUser());
         $this->client->request(
             'PATCH',
-            '/api/edition/' . $this->getEdition()->getId(),
+            '/api/category/' . $this->getCategory()->getId(),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -217,7 +217,7 @@ class EditionControllerTest extends WebTestCase
     public function testEndpointDeleteWithBadId(): void
     {
         $this->client->loginUser($this->getAdminUser());
-        $this->client->request('DELETE', '/api/edition/0');
+        $this->client->request('DELETE', '/api/category/0');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -225,7 +225,7 @@ class EditionControllerTest extends WebTestCase
     public function testEndpointDeleteWithUser(): void
     {
         $this->client->loginUser($this->getUser());
-        $this->client->request('DELETE', '/api/edition/' . $this->getEdition()->getId());
+        $this->client->request('DELETE', '/api/category/' . $this->getCategory()->getId());
 
         $this->assertResponseStatusCodeSame(403);
     }
@@ -233,7 +233,7 @@ class EditionControllerTest extends WebTestCase
     public function testEndpointDeleteWithAdminUser(): void
     {
         $this->client->loginUser($this->getAdminUser());
-        $this->client->request('DELETE', '/api/edition/' . $this->getEdition()->getId());
+        $this->client->request('DELETE', '/api/category/' . $this->getCategory()->getId());
 
         $this->assertResponseStatusCodeSame(200);
     }
