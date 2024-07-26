@@ -2,8 +2,8 @@
 
 namespace App\Tests\Entity;
 
-use App\Entity\Edition;
-use App\Repository\EditionRepository;
+use App\Entity\Category;
+use App\Repository\CategoryRepository;
 use App\Tests\Utils\Providers\EnableTrait;
 use App\Tests\Utils\Providers\UniqueNameTrait;
 use App\Tests\Utils\TestTrait;
@@ -11,7 +11,7 @@ use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Liip\TestFixturesBundle\Services\DatabaseTools\ORMDatabaseTool;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class EditionEntityTest extends KernelTestCase
+class CategoryEntityTest extends KernelTestCase
 {
     use TestTrait;
     use EnableTrait;
@@ -29,19 +29,19 @@ class EditionEntityTest extends KernelTestCase
     public function testRepositoryCount(): void
     {
         $this->databaseTool->loadAliceFixture([
-            \dirname(__DIR__) . '/Fixtures/EditionFixtures.yaml',
+            \dirname(__DIR__) . '/Fixtures/CategoryFixtures.yaml',
         ]);
 
-        $editionRepo = self::getContainer()->get(EditionRepository::class);
+        $categoryRepo = self::getContainer()->get(CategoryRepository::class);
 
-        $editions = $editionRepo->findAll();
+        $categories = $categoryRepo->findAll();
 
-        $this->assertCount(6, $editions);
+        $this->assertCount(6, $categories);
     }
 
-    private function getEntity(): Edition
+    private function getEntity(): Category
     {
-        return (new Edition())
+        return (new Category())
             ->setName('lorem')
             ->setDescription('lorem')
             ->setEnable(false);
@@ -57,10 +57,10 @@ class EditionEntityTest extends KernelTestCase
      */
     public function testInvalideEnable(?bool $enable): void
     {
-        $edition = $this->getEntity()
+        $category = $this->getEntity()
             ->setEnable($enable);
 
-        $this->assertHasErrors($edition, 1);
+        $this->assertHasErrors($category, 1);
     }
 
     /**
@@ -68,30 +68,29 @@ class EditionEntityTest extends KernelTestCase
      */
     public function testInvalideName(string $name): void
     {
-        $edition = $this->getEntity()
+        $category = $this->getEntity()
             ->setName($name);
 
-        $this->assertHasErrors($edition, 1);
+        $this->assertHasErrors($category, 1);
     }
 
     public function testfindAllWithPagination(): void
     {
-        $repo = self::getContainer()->get(EditionRepository::class);
+        $repo = self::getContainer()->get(CategoryRepository::class);
 
-        $editions = $repo->findAllWithPagination(1, 6);
+        $categories = $repo->findAllWithPagination(1, 6);
 
-        $this->assertCount(6, $editions);
+        $this->assertCount(6, $categories);
     }
 
     public function testfindAllWithPaginationWithInvalidArgument(): void
     {
-        $repo = self::getContainer()->get(EditionRepository::class);
+        $repo = self::getContainer()->get(CategoryRepository::class);
 
         $this->expectException(\TypeError::class);
 
         $repo->findAllWithPagination('test', 6);
     }
-
 
     public function tearDown(): void
     {

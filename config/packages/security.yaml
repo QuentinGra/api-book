@@ -54,6 +54,11 @@ security:
         roles: [ROLE_ADMIN],
         methods: [POST, PUT, PATCH, DELETE],
       }
+    - {
+        path: ^/api/category,
+        roles: [ROLE_ADMIN],
+        methods: [POST, PUT, PATCH, DELETE],
+      }
 
 when@test:
   security:
