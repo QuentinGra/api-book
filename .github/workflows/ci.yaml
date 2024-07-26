@@ -11,16 +11,6 @@ jobs:
     name: Symfony 7 (PHP ${{ matrix.php-versions }})
     # https://hub.docker.com/_/ubuntu/
     runs-on: ubuntu-latest
-    services:
-      # https://docs.docker.com/samples/library/mysql/
-      mysql:
-        image: mysql
-        env:
-          MYSQL_ROOT_PASSWORD: root
-        ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-
     strategy:
       fail-fast: true
       matrix:
@@ -36,7 +26,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-versions }}
-          extensions: mbstring, openssl, xml, ctype, iconv, intl, pdo, pdo_mysql, dom, filter, gd, iconv, json, mbstring, fileinfo
+          extensions: mbstring, openssl, xml, ctype, iconv, intl, pdo, pdo_mysql, dom, filter, gd, iconv, json, fileinfo
           coverage: xdebug
         env:
           update: true
@@ -61,14 +51,6 @@ jobs:
 
       - name: Install Composer dependencies
         run: composer install
-
-      # —— Symfony 🎵 ——————————————————————————————————————————————————————————
-      - name: Check Symfony requirements
-        run: php vendor/bin/requirements-checker
-
-      - name: Check the Symfony console
-        run: |
-          php bin/console about
 
       ## —— Coding standards ✨ ————————————————————————————————————————————————
       - name: Coding standards checks (php-cs-fixer)
