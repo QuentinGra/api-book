@@ -25,3 +25,6 @@ services:
 
   App\Fixtures\Providers\UserProvider:
     tags: ["nelmio_alice.faker.provider"]
+
+  App\Fixtures\Providers\BookProvider:
+    tags: ["nelmio_alice.faker.provider"]

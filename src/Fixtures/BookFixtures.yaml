@@ -1,0 +1,15 @@
+include:
+  - EditionFixtures.yaml
+  - AuthorFixtures.yaml
+  - CategoryFixtures.yaml
+
+App\Entity\Book:
+  book_{1..5}:
+    name (unique): <randomTitle()>
+    description: <paragraph()>
+    dateEdition: <dateTime()>
+    enable: true
+    edition: "@edition_<current()>"
+    authors: "@author_<current()>"
+    # TODO: Fixtures table assoc
+    # categories: ["@book_<current()>, @category_<current()>"]
