@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -70,5 +71,52 @@ class BookController extends AbstractController
         return $this->json($book, 201, [], [
             'groups' => ['book:read', 'app:read'],
         ]);
+    }
+
+    #[Route('/{id}', name: '.update', methods: ['PUT', 'PATCH'])]
+    public function update(Request $request, ?Book $book): JsonResponse
+    {
+        if (!$book) {
+            return $this->json([
+                'status' => 'error',
+                'message' => 'Book not found',
+            ], 404);
+        }
+
+        $book = $this->serializer->deserialize($request->getContent(), Book::class, 'json', [
+            'object_to_populate' => $book,
+        ]);
+
+        $errors = $this->validator->validate($book);
+
+        if (count($errors) > 0) {
+            return $this->json($errors, 422);
+        }
+
+        $this->em->persist($book);
+        $this->em->flush();
+
+        return $this->json($book, 201, [], [
+            'groups' => ['book:read', 'app:read'],
+        ]);
+    }
+
+    #[Route('/{id}', name: '.delete', methods: ['DELETE'])]
+    public function delete(?Book $book): JsonResponse
+    {
+        if (!$book) {
+            return $this->json([
+                'status' => 'error',
+                'message' => 'Book not found',
+            ], 404);
+        }
+
+        $this->em->remove($book);
+        $this->em->flush();
+
+        return $this->json([
+            'status' => 'success',
+            'message' => 'Book deleted',
+        ], 200);
     }
 }
