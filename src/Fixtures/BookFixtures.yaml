@@ -10,5 +10,5 @@ App\Entity\Book:
     dateEdition: <dateTime()>
     enable: true
     edition: "@edition_<current()>"
-    authors: "@author_<current()>"
+    author: "@author_<current()>"
     categories: <numberBetween(1, 3)>x @category_*

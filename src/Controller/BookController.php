@@ -3,15 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\Book;
-use OpenApi\Attributes as OA;
 use App\Repository\BookRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[Route('/api/book', name: 'api.book')]
 #[OA\Tag(name: 'Book')]
@@ -55,10 +55,9 @@ class BookController extends AbstractController
 
     #[Route('/create', name: '.create', methods: ['POST'])]
     public function create(
-        //#[MapRequestPayload]
+        #[MapRequestPayload]
         Book $book,
     ): JsonResponse {
-        dd($book);
         $errors = $this->validator->validate($book);
 
         if (count($errors) > 0) {

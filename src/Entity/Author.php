@@ -62,7 +62,7 @@ class Author
     /**
      * @var Collection<int, Book>
      */
-    #[ORM\OneToMany(targetEntity: Book::class, mappedBy: 'authors')]
+    #[ORM\OneToMany(targetEntity: Book::class, mappedBy: 'author')]
     private Collection $books;
 
     public function __construct()
@@ -160,7 +160,7 @@ class Author
     {
         if (!$this->books->contains($book)) {
             $this->books->add($book);
-            $book->setAuthors($this);
+            $book->setAuthor($this);
         }
 
         return $this;
@@ -170,8 +170,8 @@ class Author
     {
         if ($this->books->removeElement($book)) {
             // set the owning side to null (unless already changed)
-            if ($book->getAuthors() === $this) {
-                $book->setAuthors(null);
+            if ($book->getAuthor() === $this) {
+                $book->setAuthor(null);
             }
         }
 

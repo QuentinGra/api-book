@@ -49,19 +49,21 @@ class Book
     /**
      * @var Collection<int, Category>
      */
-    #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'books')]
+    #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'books', cascade: ['persist'])]
     #[Groups(['book:read'])]
     private Collection $categories;
 
     #[ORM\ManyToOne(inversedBy: 'books', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['book:read'])]
+    #[Assert\NotBlank]
     private ?Edition $edition = null;
 
     #[ORM\ManyToOne(inversedBy: 'books', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['book:read'])]
-    private ?Author $authors = null;
+    #[Assert\NotBlank]
+    private ?Author $author = null;
 
     public function __construct()
     {
@@ -145,14 +147,14 @@ class Book
         return $this;
     }
 
-    public function getAuthors(): ?Author
+    public function getAuthor(): ?Author
     {
-        return $this->authors;
+        return $this->author;
     }
 
-    public function setAuthors(?Author $authors): static
+    public function setAuthor(?Author $author): static
     {
-        $this->authors = $authors;
+        $this->author = $author;
 
         return $this;
     }
