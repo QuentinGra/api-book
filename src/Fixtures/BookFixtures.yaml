@@ -11,5 +11,4 @@ App\Entity\Book:
     enable: true
     edition: "@edition_<current()>"
     authors: "@author_<current()>"
-    # TODO: Fixtures table assoc
-    # categories: ["@book_<current()>, @category_<current()>"]
+    categories: <numberBetween(1, 3)>x @category_*

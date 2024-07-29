@@ -33,7 +33,7 @@ class Category
         maxMessage: 'Le nom ne peut pas dépasser {{ limit }} caractères.',
     )]
     #[Assert\NotBlank]
-    #[Groups(['category:read'])]
+    #[Groups(['category:read', 'book:read'])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]

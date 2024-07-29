@@ -50,14 +50,17 @@ class Book
      * @var Collection<int, Category>
      */
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'books')]
+    #[Groups(['book:read'])]
     private Collection $categories;
 
-    #[ORM\ManyToOne(inversedBy: 'books')]
+    #[ORM\ManyToOne(inversedBy: 'books', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['book:read'])]
     private ?Edition $edition = null;
 
-    #[ORM\ManyToOne(inversedBy: 'books')]
+    #[ORM\ManyToOne(inversedBy: 'books', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['book:read'])]
     private ?Author $authors = null;
 
     public function __construct()

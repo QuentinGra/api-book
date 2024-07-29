@@ -11,6 +11,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Attribute\Ignore;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: EditionRepository::class)]
@@ -33,7 +34,7 @@ class Edition
         maxMessage: 'Le nom ne peut pas dépasser {{ limit }} caractères.',
     )]
     #[Assert\NotBlank]
-    #[Groups(['edition:read'])]
+    #[Groups(['edition:read', 'book:read'])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
