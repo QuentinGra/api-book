@@ -43,7 +43,8 @@ class UserEntityTest extends KernelTestCase
             ->setEmail('test@test.com')
             ->setFirstName('test')
             ->setLastName('test')
-            ->setPassword('Test1234!');
+            ->setPassword('Test1234!')
+            ->setBirthDate(new \DateTime());
     }
 
     public function testValidEntity(): void

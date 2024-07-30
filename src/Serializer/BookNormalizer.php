@@ -43,11 +43,11 @@ class BookNormalizer implements DenormalizerInterface
 
         $book = $this->normalizer->denormalize($data, $type, $format, $context);
 
-        if (!isset($context["object_to_populate"]) || isset($data['edition'])) {
+        if (!isset($context['object_to_populate']) || isset($data['edition'])) {
             $book->setEdition(isset($edition) ? $edition : null);
         }
 
-        if (!isset($context["object_to_populate"]) || isset($data['author'])) {
+        if (!isset($context['object_to_populate']) || isset($data['author'])) {
             $book->setAuthor(isset($author) ? $author : null);
         }
 
