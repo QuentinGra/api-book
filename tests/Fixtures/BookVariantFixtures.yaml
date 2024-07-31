@@ -1,0 +1,8 @@
+App\Entity\BookVariant:
+  bookVariant_poche:
+    type: "poche"
+    enable: true
+
+  bookVariant_relier:
+    type: "relier"
+    enable: true
