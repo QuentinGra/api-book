@@ -2,7 +2,9 @@
 
 namespace App\Tests\Entity;
 
+use App\Entity\Book;
 use App\Entity\BookVariant;
+use App\Repository\BookRepository;
 use App\Repository\BookVariantRepository;
 use App\Tests\Utils\Providers\EnableTrait;
 use App\Tests\Utils\TestTrait;
@@ -24,10 +26,16 @@ class BookVariantEntityTest extends KernelTestCase
         $this->databaseTool = self::getContainer()->get(DatabaseToolCollection::class)->get();
     }
 
+    private function getBook(): Book
+    {
+        return self::getContainer()->get(BookRepository::class)->findOneBy(['name' => 'test']);
+    }
+
     public function testRepositoryCount(): void
     {
         $this->databaseTool->loadAliceFixture([
             \dirname(__DIR__) . '/Fixtures/BookVariantFixtures.yaml',
+            \dirname(__DIR__) . '/Fixtures/BookFixtures.yaml',
         ]);
 
         $bookVariantRepo = self::getContainer()->get(BookVariantRepository::class);
@@ -41,7 +49,8 @@ class BookVariantEntityTest extends KernelTestCase
     {
         return (new BookVariant())
             ->setType('brocher')
-            ->setEnable(false);
+            ->setEnable(false)
+            ->addBook($this->getBook());
     }
 
     public function testValidEntity(): void

@@ -4,9 +4,11 @@ namespace App\Tests\Entity;
 
 use App\Entity\Author;
 use App\Entity\Book;
+use App\Entity\Category;
 use App\Entity\Edition;
 use App\Repository\AuthorRepository;
 use App\Repository\BookRepository;
+use App\Repository\CategoryRepository;
 use App\Repository\EditionRepository;
 use App\Tests\Utils\Providers\EnableTrait;
 use App\Tests\Utils\Providers\UniqueNameTrait;
@@ -40,10 +42,15 @@ class BookEntityTest extends KernelTestCase
         return self::getContainer()->get(AuthorRepository::class)->findOneBy(['firstName' => 'test']);
     }
 
+    private function getCategory(): Category
+    {
+        return self::getContainer()->get(CategoryRepository::class)->findOneBy(['name' => 'test']);
+    }
+
     public function testRepositoryCount(): void
     {
         $this->databaseTool->loadAliceFixture([
-            \dirname(__DIR__).'/Fixtures/BookFixtures.yaml',
+            \dirname(__DIR__) . '/Fixtures/BookFixtures.yaml',
         ]);
 
         $bookRepo = self::getContainer()->get(BookRepository::class);
@@ -61,7 +68,8 @@ class BookEntityTest extends KernelTestCase
             ->setDateEdition(new \DateTime())
             ->setEnable(false)
             ->setAuthor($this->getAuthor())
-            ->setEdition($this->getedition());
+            ->setEdition($this->getedition())
+            ->addCategory($this->getCategory());
     }
 
     public function testValidEntity(): void

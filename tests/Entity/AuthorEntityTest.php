@@ -3,7 +3,9 @@
 namespace App\Tests\Entity;
 
 use App\Entity\Author;
+use App\Entity\Book;
 use App\Repository\AuthorRepository;
+use App\Repository\BookRepository;
 use App\Tests\Utils\Providers\EnableTrait;
 use App\Tests\Utils\Providers\NameTrait;
 use App\Tests\Utils\TestTrait;
@@ -26,10 +28,16 @@ class AuthorEntityTest extends KernelTestCase
         $this->databaseTool = self::getContainer()->get(DatabaseToolCollection::class)->get();
     }
 
+    private function getBook(): Book
+    {
+        return self::getContainer()->get(BookRepository::class)->findOneBy(['name' => 'test']);
+    }
+
     public function testRepositoryCount(): void
     {
         $this->databaseTool->loadAliceFixture([
-            \dirname(__DIR__).'/Fixtures/AuthorFixtures.yaml',
+            \dirname(__DIR__) . '/Fixtures/AuthorFixtures.yaml',
+            \dirname(__DIR__) . '/Fixtures/BookFixtures.yaml',
         ]);
 
         $authorRepo = self::getContainer()->get(AuthorRepository::class);
@@ -45,7 +53,8 @@ class AuthorEntityTest extends KernelTestCase
             ->setFirstName('test')
             ->setLastName('test')
             ->setDescription('test')
-            ->setEnable(false);
+            ->setEnable(false)
+            ->addBook($this->getBook());
     }
 
     public function testValidEntity(): void
