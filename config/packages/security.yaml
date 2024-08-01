@@ -64,11 +64,6 @@ security:
         roles: [ROLE_ADMIN],
         methods: [POST, PUT, PATCH, DELETE],
       }
-    - {
-        path: ^/api/book-variant,
-        roles: [ROLE_ADMIN],
-        methods: [POST, PUT, PATCH, DELETE],
-      }
 
 when@test:
   security:

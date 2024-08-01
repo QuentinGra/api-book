@@ -37,6 +37,11 @@ services:
       $normalizer: "@serializer.normalizer.object"
     tags: ["serializer.normalizer"]
 
+  App\Serializer\BookImageNormalizer:
+    arguments:
+      $normalizer: "@serializer.normalizer.object"
+    tags: ["serializer.normalizer"]
+
   acme_api.event.authentication_success_listener:
     class: App\Event\AuthenticationSuccessListener
     tags:

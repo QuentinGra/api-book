@@ -72,10 +72,17 @@ class Book
     #[Groups(['book:read'])]
     private Collection $bookVariants;
 
+    /**
+     * @var Collection<int, BookImage>
+     */
+    #[ORM\OneToMany(targetEntity: BookImage::class, mappedBy: 'book')]
+    private Collection $bookImages;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
         $this->bookVariants = new ArrayCollection();
+        $this->bookImages = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -189,6 +196,36 @@ class Book
     {
         if ($this->bookVariants->removeElement($bookVariant)) {
             $bookVariant->removeBook($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, BookImage>
+     */
+    public function getBookImages(): Collection
+    {
+        return $this->bookImages;
+    }
+
+    public function addBookImage(BookImage $bookImage): static
+    {
+        if (!$this->bookImages->contains($bookImage)) {
+            $this->bookImages->add($bookImage);
+            $bookImage->setBook($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBookImage(BookImage $bookImage): static
+    {
+        if ($this->bookImages->removeElement($bookImage)) {
+            // set the owning side to null (unless already changed)
+            if ($bookImage->getBook() === $this) {
+                $bookImage->setBook(null);
+            }
         }
 
         return $this;
