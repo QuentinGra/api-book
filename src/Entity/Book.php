@@ -65,9 +65,17 @@ class Book
     #[Assert\NotBlank]
     private ?Author $author = null;
 
+    /**
+     * @var Collection<int, BookVariant>
+     */
+    #[ORM\ManyToMany(targetEntity: BookVariant::class, mappedBy: 'books')]
+    #[Groups(['book:read'])]
+    private Collection $bookVariants;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
+        $this->bookVariants = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -155,6 +163,33 @@ class Book
     public function setAuthor(?Author $author): static
     {
         $this->author = $author;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, BookVariant>
+     */
+    public function getBookVariants(): Collection
+    {
+        return $this->bookVariants;
+    }
+
+    public function addBookVariant(BookVariant $bookVariant): static
+    {
+        if (!$this->bookVariants->contains($bookVariant)) {
+            $this->bookVariants->add($bookVariant);
+            $bookVariant->addBook($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBookVariant(BookVariant $bookVariant): static
+    {
+        if ($this->bookVariants->removeElement($bookVariant)) {
+            $bookVariant->removeBook($this);
+        }
 
         return $this;
     }

@@ -9,7 +9,6 @@ trait EnableTrait
         return [
             'empty' => [
                 'enable' => null,
-                'number' => 1,
             ],
         ];
     }
