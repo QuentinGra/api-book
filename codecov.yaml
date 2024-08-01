@@ -16,3 +16,4 @@ ignore:
   - "src/DataFixtures"
   - "src/Serializer/BookNormalizer.php"
   - "src/Fixtures/Providers/BookProvider.php"
+  - "src/Fixtures/Providers/BookVariantProvider.php"
