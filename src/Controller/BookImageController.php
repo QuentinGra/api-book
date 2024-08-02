@@ -6,6 +6,7 @@ use App\Entity\BookImage;
 use App\Repository\BookImageRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Attributes as OA;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,8 +26,6 @@ class BookImageController extends AbstractController
     ) {
     }
 
-    // TODO: Route show ou modification de la route index.
-
     #[Route('', name: '.index', methods: ['GET'])]
     public function index(): JsonResponse
     {
@@ -38,6 +37,29 @@ class BookImageController extends AbstractController
                 'groups' => ['bookImage:read', 'app:read']
             ]
         );
+    }
+
+    #[Route('/{book_id}', name: '.show', methods: ['GET'])]
+    /**
+     * Show all images for one book
+     * @param iterable $bookImages
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function show(
+        #[MapEntity(class: BookImage::class, expr: 'repository.findBy({"book": book_id}, {}, 10)')]
+        iterable $bookImages
+    ): JsonResponse {
+
+        if (!$bookImages) {
+            return $this->json([
+                'status' => 'error',
+                'message' => 'Image not found',
+            ], 404);
+        }
+
+        return $this->json($bookImages, 200, [], [
+            'groups' => ['bookImage:read', 'app:read']
+        ]);
     }
 
     #[Route('/create', name: '.create', methods: ['POST'])]
@@ -71,8 +93,6 @@ class BookImageController extends AbstractController
             'message' => 'Image add',
         ], 201);
     }
-
-    // FIXME: Supprime en base de donnée mais renvoie 500 "Expected argument of type "string" "null" given"
 
     #[Route('/{id}', name: '.delete', methods: ['DELETE'])]
     public function delete(?BookImage $bookImage): JsonResponse
