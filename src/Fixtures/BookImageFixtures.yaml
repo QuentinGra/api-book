@@ -1,0 +1,8 @@
+include:
+  - BookFixtures.yaml
+
+App\Entity\BookImage:
+  BookImage_{1..5}:
+    imageName: <image()>
+    enable: true
+    book: "@book_<current()>"

@@ -32,6 +32,9 @@ services:
   App\Fixtures\Providers\BookVariantProvider:
     tags: ["nelmio_alice.faker.provider"]
 
+  App\Fixtures\Providers\BookImageProvider:
+    tags: ["nelmio_alice.faker.provider"]
+
   App\Serializer\BookNormalizer:
     arguments:
       $normalizer: "@serializer.normalizer.object"
