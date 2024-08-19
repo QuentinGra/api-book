@@ -128,6 +128,32 @@ class BookImageControllerTest extends WebTestCase
         $this->assertResponseStatusCodeSame(403);
     }
 
+    public function testEndpointDeleteWithGoodIdAsUser(): void
+    {
+        $book = $this->getBook();
+        $this->client->loginUser($this->getUser());
+        $this->client->request('DELETE', '/api/book-image/' . $book->getId());
+
+        $this->assertResponseStatusCodeSame(403);
+    }
+
+    public function testEndpointDeleteWithGoodIdAsAdmin(): void
+    {
+        $book = $this->getBook();
+        $this->client->loginUser($this->getAdminUser());
+        $this->client->request('DELETE', '/api/book-image/' . $book->getId());
+
+        $this->assertResponseStatusCodeSame(200);
+    }
+
+    public function testEndpointDeleteWithBadId(): void
+    {
+        $this->client->loginUser($this->getUser());
+        $this->client->request('DELETE', '/api/book_image/0');
+
+        $this->assertResponseStatusCodeSame(404);
+    }
+
     public function tearDown(): void
     {
         parent::tearDown();
