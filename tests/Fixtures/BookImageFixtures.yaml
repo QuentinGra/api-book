@@ -10,4 +10,4 @@ App\Entity\BookImage:
   bookImage_test:
     imageName: <image()>
     enable: true
-    book: "@book_1"
+    book: "@book_test"
