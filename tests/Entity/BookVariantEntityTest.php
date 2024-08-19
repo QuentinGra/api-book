@@ -2,21 +2,19 @@
 
 namespace App\Tests\Entity;
 
-use App\Entity\Author;
 use App\Entity\Book;
-use App\Repository\AuthorRepository;
+use App\Entity\BookVariant;
 use App\Repository\BookRepository;
+use App\Repository\BookVariantRepository;
 use App\Tests\Utils\Providers\EnableTrait;
-use App\Tests\Utils\Providers\NameTrait;
 use App\Tests\Utils\TestTrait;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Liip\TestFixturesBundle\Services\DatabaseTools\ORMDatabaseTool;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class AuthorEntityTest extends KernelTestCase
+class BookVariantEntityTest extends KernelTestCase
 {
     use TestTrait;
-    use NameTrait;
     use EnableTrait;
 
     protected ?ORMDatabaseTool $databaseTool = null;
@@ -36,23 +34,21 @@ class AuthorEntityTest extends KernelTestCase
     public function testRepositoryCount(): void
     {
         $this->databaseTool->loadAliceFixture([
-            \dirname(__DIR__).'/Fixtures/AuthorFixtures.yaml',
+            \dirname(__DIR__).'/Fixtures/BookVariantFixtures.yaml',
             \dirname(__DIR__).'/Fixtures/BookFixtures.yaml',
         ]);
 
-        $authorRepo = self::getContainer()->get(AuthorRepository::class);
+        $bookVariantRepo = self::getContainer()->get(BookVariantRepository::class);
 
-        $authors = $authorRepo->findAll();
+        $bookVariants = $bookVariantRepo->findAll();
 
-        $this->assertCount(6, $authors);
+        $this->assertCount(2, $bookVariants);
     }
 
-    private function getEntity(): Author
+    private function getEntity(): BookVariant
     {
-        return (new Author())
-            ->setFirstName('test')
-            ->setLastName('test')
-            ->setDescription('test')
+        return (new BookVariant())
+            ->setType('brocher')
             ->setEnable(false)
             ->addBook($this->getBook());
     }
@@ -63,14 +59,14 @@ class AuthorEntityTest extends KernelTestCase
     }
 
     /**
-     * @dataProvider provideName
+     * @dataProvider provideType
      */
-    public function testInvalideLastName(string $name): void
+    public function testInvalideType(string $type, int $number): void
     {
-        $author = $this->getEntity()
-            ->setLastName($name);
+        $bookVariant = $this->getEntity()
+            ->setType($type);
 
-        $this->assertHasErrors($author, 1);
+        $this->assertHasErrors($bookVariant, $number);
     }
 
     /**
@@ -78,28 +74,28 @@ class AuthorEntityTest extends KernelTestCase
      */
     public function testInvalideEnable(?bool $enable): void
     {
-        $author = $this->getEntity()
+        $bookVariant = $this->getEntity()
             ->setEnable($enable);
 
-        $this->assertHasErrors($author, 1);
+        $this->assertHasErrors($bookVariant, 1);
     }
 
-    public function testfindAllWithPagination(): void
+    public function provideType(): array
     {
-        $repo = self::getContainer()->get(AuthorRepository::class);
-
-        $authors = $repo->findAllWithPagination(1, 6);
-
-        $this->assertCount(6, $authors);
-    }
-
-    public function testfindAllWithPaginationWithInvalidArgument(): void
-    {
-        $repo = self::getContainer()->get(AuthorRepository::class);
-
-        $this->expectException(\TypeError::class);
-
-        $repo->findAllWithPagination('test', 6);
+        return [
+            'non_unique' => [
+                'type' => 'poche',
+                'number' => 1,
+            ],
+            'max_length' => [
+                'type' => str_repeat('a', 51),
+                'number' => 2,
+            ],
+            'empty' => [
+                'type' => '',
+                'number' => 2,
+            ],
+        ];
     }
 
     public function tearDown(): void

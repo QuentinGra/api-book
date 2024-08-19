@@ -27,7 +27,7 @@ class UserEntityTest extends KernelTestCase
     public function testRepositoryCount(): void
     {
         $this->databaseTool->loadAliceFixture([
-            \dirname(__DIR__) . '/Fixtures/UserFixtures.yaml',
+            \dirname(__DIR__).'/Fixtures/UserFixtures.yaml',
         ]);
 
         $userRepo = self::getContainer()->get(UserRepository::class);
@@ -43,7 +43,8 @@ class UserEntityTest extends KernelTestCase
             ->setEmail('test@test.com')
             ->setFirstName('test')
             ->setLastName('test')
-            ->setPassword('Test1234!');
+            ->setPassword('Test1234!')
+            ->setBirthDate(new \DateTime());
     }
 
     public function testValidEntity(): void
@@ -54,23 +55,23 @@ class UserEntityTest extends KernelTestCase
     /**
      * @dataProvider provideEmail
      */
-    public function testInvalidEmail(string $email, int $number): void
+    public function testInvalidEmail(string $email): void
     {
         $user = $this->getEntity()
             ->setEmail($email);
 
-        $this->assertHasErrors($user, $number);
+        $this->assertHasErrors($user, 1);
     }
 
     /**
      * @dataProvider providePassword
      */
-    public function testInvalidPassword(string $password, int $number): void
+    public function testInvalidPassword(string $password): void
     {
         $user = $this->getEntity()
             ->setPassword($password);
 
-        $this->assertHasErrors($user, $number);
+        $this->assertHasErrors($user, 1);
     }
 
     /**
@@ -118,19 +119,15 @@ class UserEntityTest extends KernelTestCase
         return [
             'non_unique' => [
                 'email' => 'admin@test.com',
-                'number' => 1,
             ],
             'max_length' => [
-                'email' => str_repeat('a', 180) . '@test.com',
-                'number' => 1,
+                'email' => str_repeat('a', 180).'@test.com',
             ],
             'empty' => [
                 'email' => '',
-                'number' => 1,
             ],
             'invalid' => [
                 'email' => 'test.com',
-                'number' => 1,
             ],
         ];
     }
@@ -140,23 +137,18 @@ class UserEntityTest extends KernelTestCase
         return [
             'min_length' => [
                 'password' => 'Test12!',
-                'number' => 1,
             ],
             'without_number' => [
                 'password' => 'Testtest!',
-                'number' => 1,
             ],
             'without_uppercase' => [
                 'password' => 'test123!',
-                'number' => 1,
             ],
             'without_special_character' => [
                 'password' => 'Test1234',
-                'number' => 1,
             ],
             'empty' => [
                 'password' => '',
-                'number' => 1,
             ],
         ];
     }

@@ -2,7 +2,9 @@
 
 namespace App\Tests\Entity;
 
+use App\Entity\Book;
 use App\Entity\Edition;
+use App\Repository\BookRepository;
 use App\Repository\EditionRepository;
 use App\Tests\Utils\Providers\EnableTrait;
 use App\Tests\Utils\Providers\UniqueNameTrait;
@@ -26,10 +28,16 @@ class EditionEntityTest extends KernelTestCase
         $this->databaseTool = self::getContainer()->get(DatabaseToolCollection::class)->get();
     }
 
+    private function getBook(): Book
+    {
+        return self::getContainer()->get(BookRepository::class)->findOneBy(['name' => 'test']);
+    }
+
     public function testRepositoryCount(): void
     {
         $this->databaseTool->loadAliceFixture([
-            \dirname(__DIR__) . '/Fixtures/EditionFixtures.yaml',
+            \dirname(__DIR__).'/Fixtures/EditionFixtures.yaml',
+            \dirname(__DIR__).'/Fixtures/BookFixtures.yaml',
         ]);
 
         $editionRepo = self::getContainer()->get(EditionRepository::class);
@@ -44,7 +52,8 @@ class EditionEntityTest extends KernelTestCase
         return (new Edition())
             ->setName('lorem')
             ->setDescription('lorem')
-            ->setEnable(false);
+            ->setEnable(false)
+            ->addBook($this->getBook());
     }
 
     public function testValidEntity(): void
@@ -91,7 +100,6 @@ class EditionEntityTest extends KernelTestCase
 
         $repo->findAllWithPagination('test', 6);
     }
-
 
     public function tearDown(): void
     {

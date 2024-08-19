@@ -2,7 +2,9 @@
 
 namespace App\Tests\Entity;
 
+use App\Entity\Book;
 use App\Entity\Category;
+use App\Repository\BookRepository;
 use App\Repository\CategoryRepository;
 use App\Tests\Utils\Providers\EnableTrait;
 use App\Tests\Utils\Providers\UniqueNameTrait;
@@ -26,10 +28,16 @@ class CategoryEntityTest extends KernelTestCase
         $this->databaseTool = self::getContainer()->get(DatabaseToolCollection::class)->get();
     }
 
+    private function getBook(): Book
+    {
+        return self::getContainer()->get(BookRepository::class)->findOneBy(['name' => 'test']);
+    }
+
     public function testRepositoryCount(): void
     {
         $this->databaseTool->loadAliceFixture([
-            \dirname(__DIR__) . '/Fixtures/CategoryFixtures.yaml',
+            \dirname(__DIR__).'/Fixtures/CategoryFixtures.yaml',
+            \dirname(__DIR__).'/Fixtures/BookFixtures.yaml',
         ]);
 
         $categoryRepo = self::getContainer()->get(CategoryRepository::class);
@@ -44,7 +52,8 @@ class CategoryEntityTest extends KernelTestCase
         return (new Category())
             ->setName('lorem')
             ->setDescription('lorem')
-            ->setEnable(false);
+            ->setEnable(false)
+            ->addBook($this->getBook());
     }
 
     public function testValidEntity(): void

@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\Category;
-use App\Repository\CategoryRepository;
+use App\Entity\BookVariant;
+use App\Repository\BookVariantRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,12 +14,12 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-#[Route('/api/category', name: 'api.category')]
-#[OA\Tag(name: 'Category')]
-class CategoryController extends AbstractController
+#[Route('/api/book-variant', name: 'api.book-variant')]
+#[OA\Tag(name: 'BookVariant')]
+class BookVariantController extends AbstractController
 {
     public function __construct(
-        private readonly CategoryRepository $categoryRepo,
+        private readonly BookVariantRepository $bookVariantRepo,
         private readonly EntityManagerInterface $em,
         private readonly SerializerInterface $serializer,
         private readonly ValidatorInterface $validator,
@@ -29,97 +29,94 @@ class CategoryController extends AbstractController
     #[Route('', name: '.index', methods: ['GET'])]
     public function index(): JsonResponse
     {
-        // TODO: Modification findAll -> findAllWithPagination
-
         return $this->json(
-            $this->categoryRepo->findAll(),
+            $this->bookVariantRepo->findAll(),
             200,
             [],
             [
-                'groups' => ['category:read', 'app:read'],
+                'groups' => ['bookVariant:read', 'app:read'],
             ]
         );
     }
 
     #[Route('/{id}', name: '.show', methods: ['GET'])]
-    public function show(?Category $category): JsonResponse
+    public function show(?BookVariant $bookVariant): JsonResponse
     {
-        if (!$category) {
+        if (!$bookVariant) {
             return $this->json([
                 'status' => 'error',
-                'message' => 'Category not found',
+                'message' => 'Book not found',
             ], 404);
         }
 
-        return $this->json($category, 200, [], [
-            'groups' => ['category:read', 'app:read'],
+        return $this->json($bookVariant, 200, [], [
+            'groups' => ['bookVariant:read', 'app:read'],
         ]);
     }
 
     #[Route('/create', name: '.create', methods: ['POST'])]
     public function create(
         #[MapRequestPayload]
-        Category $category,
+        BookVariant $bookVariant,
     ): JsonResponse {
-        $errors = $this->validator->validate($category);
+        $errors = $this->validator->validate($bookVariant);
 
         if (count($errors) > 0) {
             return $this->json($errors, 422);
         }
 
-        $this->em->persist($category);
+        $this->em->persist($bookVariant);
         $this->em->flush();
 
-        return $this->json([
-            'status' => 'success',
-            'message' => 'Category created',
-        ], 201);
+        return $this->json($bookVariant, 201, [], [
+            'groups' => ['bookVariant:read', 'app:read'],
+        ]);
     }
 
     #[Route('/{id}', name: '.update', methods: ['PUT', 'PATCH'])]
-    public function update(Request $request, ?Category $category): JsonResponse
+    public function update(Request $request, ?BookVariant $bookVariant): JsonResponse
     {
-        if (!$category) {
+        if (!$bookVariant) {
             return $this->json([
                 'status' => 'error',
-                'message' => 'Category not found',
+                'message' => 'Book not found',
             ], 404);
         }
 
-        $category = $this->serializer->deserialize($request->getContent(), Category::class, 'json', [
-            'object_to_populate' => $category,
+        $bookVariant = $this->serializer->deserialize($request->getContent(), BookVariant::class, 'json', [
+            'object_to_populate' => $bookVariant,
         ]);
 
-        $errors = $this->validator->validate($category);
+        $errors = $this->validator->validate($bookVariant);
 
         if (count($errors) > 0) {
             return $this->json($errors, 422);
         }
 
-        $this->em->persist($category);
+        $this->em->persist($bookVariant);
         $this->em->flush();
 
-        return $this->json($category, 201, [], [
-            'groups' => ['category:read', 'app:read'],
+        return $this->json($bookVariant, 201, [], [
+            'groups' => ['bookVariant:read', 'app:read'],
         ]);
     }
 
     #[Route('/{id}', name: '.delete', methods: ['DELETE'])]
-    public function delete(?Category $category): JsonResponse
+    public function delete(?BookVariant $bookVariant): JsonResponse
     {
-        if (!$category) {
+        if (!$bookVariant) {
             return $this->json([
                 'status' => 'error',
-                'message' => 'Category not found',
+                'message' => 'Book not found',
             ], 404);
         }
 
-        $this->em->remove($category);
+        $this->em->remove($bookVariant);
         $this->em->flush();
 
         return $this->json([
             'status' => 'success',
-            'message' => 'Category deleted',
+            'message' => 'BookVariant deleted',
         ], 200);
     }
 }

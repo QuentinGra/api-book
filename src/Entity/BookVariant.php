@@ -4,46 +4,47 @@ namespace App\Entity;
 
 use App\Entity\Utils\DateTimeTrait;
 use App\Entity\Utils\EnableTrait;
-use App\Repository\CategoryRepository;
+use App\Repository\BookVariantRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: CategoryRepository::class)]
-#[UniqueEntity(fields: ['name'], message: 'Une categorie existe déjàs avec ce nom')]
+#[ORM\Entity(repositoryClass: BookVariantRepository::class)]
+#[UniqueEntity(fields: ['type'], message: 'Ce type existe déja')]
 #[ORM\HasLifecycleCallbacks]
-class Category
+class BookVariant
 {
     use DateTimeTrait;
     use EnableTrait;
 
+    public const TYPE_BROCHER = 'brocher';
+    public const TYPE_POCHE = 'poche';
+    public const TYPE_RELIER = 'relier';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['category:read'])]
+    #[Groups(['bookVariant:read'])]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    #[Assert\Length(
-        max: 255,
-        maxMessage: 'Le nom ne peut pas dépasser {{ limit }} caractères.',
-    )]
+    #[ORM\Column(length: 50)]
+    #[Assert\Length(max: 50)]
     #[Assert\NotBlank]
-    #[Groups(['category:read', 'book:read'])]
-    private ?string $name = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Groups(['category:read'])]
-    private ?string $description = null;
+    #[Assert\Choice(
+        choices: [
+            self::TYPE_BROCHER, self::TYPE_POCHE, self::TYPE_RELIER,
+        ]
+    )]
+    #[Groups(['bookVariant:read', 'book:read'])]
+    private ?string $type = null;
 
     /**
      * @var Collection<int, Book>
      */
-    #[ORM\ManyToMany(targetEntity: Book::class, mappedBy: 'categories')]
+    #[ORM\ManyToMany(targetEntity: Book::class, inversedBy: 'bookVariants', cascade: ['persist'])]
     private Collection $books;
 
     public function __construct()
@@ -56,26 +57,14 @@ class Category
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getType(): ?string
     {
-        return $this->name;
+        return $this->type;
     }
 
-    public function setName(string $name): static
+    public function setType(string $type): static
     {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(?string $description): static
-    {
-        $this->description = $description;
+        $this->type = $type;
 
         return $this;
     }
@@ -92,7 +81,6 @@ class Category
     {
         if (!$this->books->contains($book)) {
             $this->books->add($book);
-            $book->addCategory($this);
         }
 
         return $this;
@@ -100,9 +88,7 @@ class Category
 
     public function removeBook(Book $book): static
     {
-        if ($this->books->removeElement($book)) {
-            $book->removeCategory($this);
-        }
+        $this->books->removeElement($book);
 
         return $this;
     }

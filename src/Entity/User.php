@@ -63,9 +63,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:read'])]
     private ?string $lastName = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     #[Groups(['user:read'])]
-    #[Assert\DateTime]
     private ?\DateTimeInterface $birthDate = null;
 
     public function getId(): ?int

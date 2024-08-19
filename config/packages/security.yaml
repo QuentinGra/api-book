@@ -59,6 +59,11 @@ security:
         roles: [ROLE_ADMIN],
         methods: [POST, PUT, PATCH, DELETE],
       }
+    - {
+        path: ^/api/book,
+        roles: [ROLE_ADMIN],
+        methods: [POST, PUT, PATCH, DELETE],
+      }
 
 when@test:
   security:

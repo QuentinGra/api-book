@@ -2,16 +2,16 @@
 
 namespace App\Tests\Controller;
 
-use App\Entity\Category;
+use App\Entity\BookVariant;
 use App\Entity\User;
-use App\Repository\CategoryRepository;
+use App\Repository\BookVariantRepository;
 use App\Repository\UserRepository;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Liip\TestFixturesBundle\Services\DatabaseTools\ORMDatabaseTool;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class CategoryControllerTest extends WebTestCase
+class BookVariantControllerTest extends WebTestCase
 {
     private ?KernelBrowser $client = null;
     private ?ORMDatabaseTool $databaseTool = null;
@@ -24,7 +24,7 @@ class CategoryControllerTest extends WebTestCase
 
         $this->databaseTool->loadAliceFixture([
             \dirname(__DIR__).'/Fixtures/UserFixtures.yaml',
-            \dirname(__DIR__).'/Fixtures/CategoryFixtures.yaml',
+            \dirname(__DIR__).'/Fixtures/BookVariantFixtures.yaml',
         ]);
     }
 
@@ -38,15 +38,15 @@ class CategoryControllerTest extends WebTestCase
         return self::getContainer()->get(UserRepository::class)->findOneBy(['email' => 'user@test.com']);
     }
 
-    private function getCategory(): Category
+    private function getBookVariant(): BookVariant
     {
-        return self::getContainer()->get(CategoryRepository::class)->findOneBy(['name' => 'test']);
+        return self::getContainer()->get(BookVariantRepository::class)->findOneBy(['type' => 'poche']);
     }
 
     public function testEndpointIndexWithAdmin(): void
     {
         $this->client->loginUser($this->getAdminUser());
-        $this->client->request('GET', '/api/category');
+        $this->client->request('GET', '/api/book-variant');
 
         $this->assertResponseStatusCodeSame(200);
     }
@@ -54,7 +54,7 @@ class CategoryControllerTest extends WebTestCase
     public function testEndpointIndexWithUser(): void
     {
         $this->client->loginUser($this->getUser());
-        $this->client->request('GET', '/api/category');
+        $this->client->request('GET', '/api/book-variant');
 
         $this->assertResponseStatusCodeSame(200);
     }
@@ -62,7 +62,7 @@ class CategoryControllerTest extends WebTestCase
     public function testEndpointShowWithBadId(): void
     {
         $this->client->loginUser($this->getUser());
-        $this->client->request('GET', '/api/category/0');
+        $this->client->request('GET', '/api/book-variant/0');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -70,7 +70,7 @@ class CategoryControllerTest extends WebTestCase
     public function testEndpointShowWithAdmin(): void
     {
         $this->client->loginUser($this->getAdminUser());
-        $this->client->request('GET', '/api/category/'.$this->getCategory()->getId());
+        $this->client->request('GET', '/api/book-variant/'.$this->getBookVariant()->getId());
 
         $this->assertResponseStatusCodeSame(200);
     }
@@ -78,7 +78,7 @@ class CategoryControllerTest extends WebTestCase
     public function testEndpointShowWithUser(): void
     {
         $this->client->loginUser($this->getUser());
-        $this->client->request('GET', '/api/category/'.$this->getCategory()->getId());
+        $this->client->request('GET', '/api/book-variant/'.$this->getBookVariant()->getId());
 
         $this->assertResponseStatusCodeSame(200);
     }
@@ -86,15 +86,14 @@ class CategoryControllerTest extends WebTestCase
     public function testEndpointCreateWithGoodCredentialsWithAdmin(): void
     {
         $data = [
-            'name' => 'lorem',
-            'description' => 'lorem',
+            'type' => 'brocher',
             'enable' => true,
         ];
 
         $this->client->loginUser($this->getAdminUser());
         $this->client->request(
             'POST',
-            '/api/category/create',
+            '/api/book-variant/create',
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -107,15 +106,14 @@ class CategoryControllerTest extends WebTestCase
     public function testEndpointCreateWithGoodCredentialsWithUser(): void
     {
         $data = [
-            'name' => 'lorem',
-            'description' => 'lorem',
+            'type' => 'brocher',
             'enable' => true,
         ];
 
         $this->client->loginUser($this->getUser());
         $this->client->request(
             'POST',
-            '/api/category/create',
+            '/api/book-variant/create',
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -128,15 +126,14 @@ class CategoryControllerTest extends WebTestCase
     public function testEndpointCreateWithBadCredentialsWithAdmin(): void
     {
         $data = [
-            'name' => str_repeat('a', 256),
-            'description' => 'lorem',
+            'type' => str_repeat('a', 51),
             'enable' => true,
         ];
 
         $this->client->loginUser($this->getAdminUser());
         $this->client->request(
             'POST',
-            '/api/category/create',
+            '/api/book-variant/create',
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -148,12 +145,12 @@ class CategoryControllerTest extends WebTestCase
 
     public function testEndpointUpdateWithBadId(): void
     {
-        $data = ['name' => 'lorem'];
+        $data = ['type' => 'brocher'];
 
         $this->client->loginUser($this->getAdminUser());
         $this->client->request(
             'PATCH',
-            '/api/category/0',
+            '/api/book-variant/0',
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -165,12 +162,12 @@ class CategoryControllerTest extends WebTestCase
 
     public function testEndpointUpdateWithAdmin(): void
     {
-        $data = ['name' => 'lorem'];
+        $data = ['type' => 'brocher'];
 
         $this->client->loginUser($this->getAdminUser());
         $this->client->request(
             'PATCH',
-            '/api/category/'.$this->getCategory()->getId(),
+            '/api/book-variant/'.$this->getBookVariant()->getId(),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -182,12 +179,12 @@ class CategoryControllerTest extends WebTestCase
 
     public function testEndpointUpdateWithBadCredentialsWithAdmin(): void
     {
-        $data = ['name' => str_repeat('a', 256)];
+        $data = ['type' => str_repeat('a', 51)];
 
         $this->client->loginUser($this->getAdminUser());
         $this->client->request(
             'PATCH',
-            '/api/category/'.$this->getCategory()->getId(),
+            '/api/book-variant/'.$this->getBookVariant()->getId(),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -199,12 +196,12 @@ class CategoryControllerTest extends WebTestCase
 
     public function testEndpointUpdateWithUser(): void
     {
-        $data = ['name' => 'lorem'];
+        $data = ['type' => 'brocher'];
 
         $this->client->loginUser($this->getUser());
         $this->client->request(
             'PATCH',
-            '/api/category/'.$this->getCategory()->getId(),
+            '/api/book-variant/'.$this->getBookVariant()->getId(),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -217,7 +214,7 @@ class CategoryControllerTest extends WebTestCase
     public function testEndpointDeleteWithBadId(): void
     {
         $this->client->loginUser($this->getAdminUser());
-        $this->client->request('DELETE', '/api/category/0');
+        $this->client->request('DELETE', '/api/book-variant/0');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -225,15 +222,15 @@ class CategoryControllerTest extends WebTestCase
     public function testEndpointDeleteWithUser(): void
     {
         $this->client->loginUser($this->getUser());
-        $this->client->request('DELETE', '/api/category/'.$this->getCategory()->getId());
+        $this->client->request('DELETE', '/api/book-variant/'.$this->getBookVariant()->getId());
 
         $this->assertResponseStatusCodeSame(403);
     }
 
-    public function testEndpointDeleteWithAdminUser(): void
+    public function testEndpointDeleteWithAdmin(): void
     {
         $this->client->loginUser($this->getAdminUser());
-        $this->client->request('DELETE', '/api/category/'.$this->getCategory()->getId());
+        $this->client->request('DELETE', '/api/book-variant/'.$this->getBookVariant()->getId());
 
         $this->assertResponseStatusCodeSame(200);
     }

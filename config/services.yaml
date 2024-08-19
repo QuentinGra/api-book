@@ -25,3 +25,31 @@ services:
 
   App\Fixtures\Providers\UserProvider:
     tags: ["nelmio_alice.faker.provider"]
+
+  App\Fixtures\Providers\BookProvider:
+    tags: ["nelmio_alice.faker.provider"]
+
+  App\Fixtures\Providers\BookVariantProvider:
+    tags: ["nelmio_alice.faker.provider"]
+
+  App\Fixtures\Providers\BookImageProvider:
+    tags: ["nelmio_alice.faker.provider"]
+
+  App\Serializer\BookNormalizer:
+    arguments:
+      $normalizer: "@serializer.normalizer.object"
+    tags: ["serializer.normalizer"]
+
+  App\Serializer\BookImageNormalizer:
+    arguments:
+      $normalizer: "@serializer.normalizer.object"
+    tags: ["serializer.normalizer"]
+
+  acme_api.event.authentication_success_listener:
+    class: App\Event\AuthenticationSuccessListener
+    tags:
+      - {
+          name: kernel.event_listener,
+          event: lexik_jwt_authentication.on_authentication_success,
+          method: onAuthenticationSuccessResponse,
+        }

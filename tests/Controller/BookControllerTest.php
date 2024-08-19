@@ -2,16 +2,20 @@
 
 namespace App\Tests\Controller;
 
-use App\Entity\Category;
+use App\Entity\Author;
+use App\Entity\Book;
+use App\Entity\Edition;
 use App\Entity\User;
-use App\Repository\CategoryRepository;
+use App\Repository\AuthorRepository;
+use App\Repository\BookRepository;
+use App\Repository\EditionRepository;
 use App\Repository\UserRepository;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Liip\TestFixturesBundle\Services\DatabaseTools\ORMDatabaseTool;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class CategoryControllerTest extends WebTestCase
+class BookControllerTest extends WebTestCase
 {
     private ?KernelBrowser $client = null;
     private ?ORMDatabaseTool $databaseTool = null;
@@ -24,7 +28,7 @@ class CategoryControllerTest extends WebTestCase
 
         $this->databaseTool->loadAliceFixture([
             \dirname(__DIR__).'/Fixtures/UserFixtures.yaml',
-            \dirname(__DIR__).'/Fixtures/CategoryFixtures.yaml',
+            \dirname(__DIR__).'/Fixtures/BookFixtures.yaml',
         ]);
     }
 
@@ -38,15 +42,25 @@ class CategoryControllerTest extends WebTestCase
         return self::getContainer()->get(UserRepository::class)->findOneBy(['email' => 'user@test.com']);
     }
 
-    private function getCategory(): Category
+    private function getBook(): Book
     {
-        return self::getContainer()->get(CategoryRepository::class)->findOneBy(['name' => 'test']);
+        return self::getContainer()->get(BookRepository::class)->findOneBy(['name' => 'test']);
+    }
+
+    private function getEdition(): Edition
+    {
+        return self::getContainer()->get(EditionRepository::class)->findOneBy(['name' => 'test']);
+    }
+
+    private function getAuthor(): Author
+    {
+        return self::getContainer()->get(AuthorRepository::class)->findOneBy(['firstName' => 'test']);
     }
 
     public function testEndpointIndexWithAdmin(): void
     {
         $this->client->loginUser($this->getAdminUser());
-        $this->client->request('GET', '/api/category');
+        $this->client->request('GET', '/api/book');
 
         $this->assertResponseStatusCodeSame(200);
     }
@@ -54,7 +68,7 @@ class CategoryControllerTest extends WebTestCase
     public function testEndpointIndexWithUser(): void
     {
         $this->client->loginUser($this->getUser());
-        $this->client->request('GET', '/api/category');
+        $this->client->request('GET', '/api/book');
 
         $this->assertResponseStatusCodeSame(200);
     }
@@ -62,7 +76,7 @@ class CategoryControllerTest extends WebTestCase
     public function testEndpointShowWithBadId(): void
     {
         $this->client->loginUser($this->getUser());
-        $this->client->request('GET', '/api/category/0');
+        $this->client->request('GET', '/api/book/0');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -70,7 +84,7 @@ class CategoryControllerTest extends WebTestCase
     public function testEndpointShowWithAdmin(): void
     {
         $this->client->loginUser($this->getAdminUser());
-        $this->client->request('GET', '/api/category/'.$this->getCategory()->getId());
+        $this->client->request('GET', '/api/book/'.$this->getBook()->getId());
 
         $this->assertResponseStatusCodeSame(200);
     }
@@ -78,7 +92,7 @@ class CategoryControllerTest extends WebTestCase
     public function testEndpointShowWithUser(): void
     {
         $this->client->loginUser($this->getUser());
-        $this->client->request('GET', '/api/category/'.$this->getCategory()->getId());
+        $this->client->request('GET', '/api/book/'.$this->getBook()->getId());
 
         $this->assertResponseStatusCodeSame(200);
     }
@@ -88,13 +102,16 @@ class CategoryControllerTest extends WebTestCase
         $data = [
             'name' => 'lorem',
             'description' => 'lorem',
+            'dateEdition' => '2000-11-27T00:00:00+00:00',
             'enable' => true,
+            'edition' => $this->getEdition()->getId(),
+            'author' => $this->getAuthor()->getId(),
         ];
 
         $this->client->loginUser($this->getAdminUser());
         $this->client->request(
             'POST',
-            '/api/category/create',
+            '/api/book/create',
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -109,13 +126,16 @@ class CategoryControllerTest extends WebTestCase
         $data = [
             'name' => 'lorem',
             'description' => 'lorem',
+            'dateEdition' => '2000-11-27T00:00:00+00:00',
             'enable' => true,
+            'edition' => $this->getEdition()->getId(),
+            'author' => $this->getAuthor()->getId(),
         ];
 
         $this->client->loginUser($this->getUser());
         $this->client->request(
             'POST',
-            '/api/category/create',
+            '/api/book/create',
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -130,13 +150,16 @@ class CategoryControllerTest extends WebTestCase
         $data = [
             'name' => str_repeat('a', 256),
             'description' => 'lorem',
+            'dateEdition' => '2000-11-27T00:00:00+00:00',
             'enable' => true,
+            'edition' => $this->getEdition()->getId(),
+            'author' => $this->getAuthor()->getId(),
         ];
 
         $this->client->loginUser($this->getAdminUser());
         $this->client->request(
             'POST',
-            '/api/category/create',
+            '/api/book/create',
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -153,7 +176,7 @@ class CategoryControllerTest extends WebTestCase
         $this->client->loginUser($this->getAdminUser());
         $this->client->request(
             'PATCH',
-            '/api/category/0',
+            '/api/book/0',
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -170,7 +193,7 @@ class CategoryControllerTest extends WebTestCase
         $this->client->loginUser($this->getAdminUser());
         $this->client->request(
             'PATCH',
-            '/api/category/'.$this->getCategory()->getId(),
+            '/api/book/'.$this->getBook()->getId(),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -187,7 +210,7 @@ class CategoryControllerTest extends WebTestCase
         $this->client->loginUser($this->getAdminUser());
         $this->client->request(
             'PATCH',
-            '/api/category/'.$this->getCategory()->getId(),
+            '/api/book/'.$this->getBook()->getId(),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -204,7 +227,7 @@ class CategoryControllerTest extends WebTestCase
         $this->client->loginUser($this->getUser());
         $this->client->request(
             'PATCH',
-            '/api/category/'.$this->getCategory()->getId(),
+            '/api/book/'.$this->getBook()->getId(),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -217,7 +240,7 @@ class CategoryControllerTest extends WebTestCase
     public function testEndpointDeleteWithBadId(): void
     {
         $this->client->loginUser($this->getAdminUser());
-        $this->client->request('DELETE', '/api/category/0');
+        $this->client->request('DELETE', '/api/book/0');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -225,7 +248,7 @@ class CategoryControllerTest extends WebTestCase
     public function testEndpointDeleteWithUser(): void
     {
         $this->client->loginUser($this->getUser());
-        $this->client->request('DELETE', '/api/category/'.$this->getCategory()->getId());
+        $this->client->request('DELETE', '/api/book/'.$this->getBook()->getId());
 
         $this->assertResponseStatusCodeSame(403);
     }
@@ -233,7 +256,7 @@ class CategoryControllerTest extends WebTestCase
     public function testEndpointDeleteWithAdminUser(): void
     {
         $this->client->loginUser($this->getAdminUser());
-        $this->client->request('DELETE', '/api/category/'.$this->getCategory()->getId());
+        $this->client->request('DELETE', '/api/book/'.$this->getBook()->getId());
 
         $this->assertResponseStatusCodeSame(200);
     }
