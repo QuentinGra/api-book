@@ -36,8 +36,8 @@ class EditionEntityTest extends KernelTestCase
     public function testRepositoryCount(): void
     {
         $this->databaseTool->loadAliceFixture([
-            \dirname(__DIR__) . '/Fixtures/EditionFixtures.yaml',
-            \dirname(__DIR__) . '/Fixtures/BookFixtures.yaml',
+            \dirname(__DIR__).'/Fixtures/EditionFixtures.yaml',
+            \dirname(__DIR__).'/Fixtures/BookFixtures.yaml',
         ]);
 
         $editionRepo = self::getContainer()->get(EditionRepository::class);

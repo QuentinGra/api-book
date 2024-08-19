@@ -34,22 +34,21 @@ class BookImageController extends AbstractController
             200,
             [],
             [
-                'groups' => ['bookImage:read', 'app:read']
+                'groups' => ['bookImage:read', 'app:read'],
             ]
         );
     }
 
     #[Route('/{book_id}', name: '.show', methods: ['GET'])]
     /**
-     * Show all images for one book
+     * Show all images for one book.
+     *
      * @param iterable $bookImages
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function show(
         #[MapEntity(class: BookImage::class, expr: 'repository.findBy({"book": book_id}, {}, 10)')]
         iterable $bookImages
     ): JsonResponse {
-
         if (!$bookImages) {
             return $this->json([
                 'status' => 'error',
@@ -58,7 +57,7 @@ class BookImageController extends AbstractController
         }
 
         return $this->json($bookImages, 200, [], [
-            'groups' => ['bookImage:read', 'app:read']
+            'groups' => ['bookImage:read', 'app:read'],
         ]);
     }
 
@@ -69,7 +68,6 @@ class BookImageController extends AbstractController
         #[MapUploadedFile]
         array|UploadedFile $image
     ): JsonResponse {
-
         if (!$image instanceof UploadedFile) {
             return $this->json([
                 'status' => 'error',

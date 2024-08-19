@@ -6,3 +6,8 @@ App\Entity\BookImage:
     imageName: <image()>
     enable: true
     book: "@book_<current()>"
+
+  bookImage_test:
+    imageName: <image()>
+    enable: true
+    book: "@book_test"

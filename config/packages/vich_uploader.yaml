@@ -45,3 +45,6 @@ when@test:
       author_adapter:
         local:
           directory: "%kernel.cache_dir%/images/authors"
+      bookImage_adapter:
+        local:
+          directory: "%kernel.cache_dir%/images/bookImages"

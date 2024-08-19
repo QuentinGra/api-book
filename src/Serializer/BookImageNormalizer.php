@@ -16,7 +16,6 @@ class BookImageNormalizer implements DenormalizerInterface
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-
         if (isset($data['book'])) {
             $book = $this->bookRepo->find($data['book']);
         }
