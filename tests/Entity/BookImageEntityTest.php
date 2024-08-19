@@ -34,7 +34,7 @@ class BookImageEntityTest extends KernelTestCase
     public function testRepositoryCount(): void
     {
         $this->databaseTool->loadAliceFixture([
-            \dirname(__DIR__) . '/Fixtures/BookImageFixtures.yaml',
+            \dirname(__DIR__).'/Fixtures/BookImageFixtures.yaml',
         ]);
 
         $bookImageRepo = self::getContainer()->get(BookImageRepository::class);

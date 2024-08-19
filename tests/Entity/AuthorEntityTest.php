@@ -36,8 +36,8 @@ class AuthorEntityTest extends KernelTestCase
     public function testRepositoryCount(): void
     {
         $this->databaseTool->loadAliceFixture([
-            \dirname(__DIR__) . '/Fixtures/AuthorFixtures.yaml',
-            \dirname(__DIR__) . '/Fixtures/BookFixtures.yaml',
+            \dirname(__DIR__).'/Fixtures/AuthorFixtures.yaml',
+            \dirname(__DIR__).'/Fixtures/BookFixtures.yaml',
         ]);
 
         $authorRepo = self::getContainer()->get(AuthorRepository::class);

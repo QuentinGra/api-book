@@ -3,9 +3,7 @@
 namespace App\Tests\Controller;
 
 use App\Entity\Book;
-use App\Entity\BookImage;
 use App\Entity\User;
-use App\Repository\BookImageRepository;
 use App\Repository\BookRepository;
 use App\Repository\UserRepository;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
@@ -26,8 +24,8 @@ class BookImageControllerTest extends WebTestCase
         $this->databaseTool = self::getContainer()->get(DatabaseToolCollection::class)->get();
 
         $this->databaseTool->loadAliceFixture([
-            \dirname(__DIR__) . '/Fixtures/UserFixtures.yaml',
-            \dirname(__DIR__) . '/Fixtures/BookImageFixtures.yaml',
+            \dirname(__DIR__).'/Fixtures/UserFixtures.yaml',
+            \dirname(__DIR__).'/Fixtures/BookImageFixtures.yaml',
         ]);
     }
 
@@ -85,7 +83,7 @@ class BookImageControllerTest extends WebTestCase
             '/api/book-image/create',
             $data,
             [
-                'image' => new UploadedFile(\dirname(__DIR__) . '/Assets/Images/sylius.png', 'sylius.png'),
+                'image' => new UploadedFile(\dirname(__DIR__).'/Assets/Images/sylius.png', 'sylius.png'),
             ]
         );
 
@@ -105,7 +103,7 @@ class BookImageControllerTest extends WebTestCase
             '/api/book-image/create',
             $data,
             [
-                'image' => new UploadedFile(\dirname(__DIR__) . '/Assets/Images/sylius.png', 'sylius.png'),
+                'image' => new UploadedFile(\dirname(__DIR__).'/Assets/Images/sylius.png', 'sylius.png'),
             ]
         );
 

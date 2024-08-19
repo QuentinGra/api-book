@@ -8,7 +8,7 @@ class BookImageProvider
     {
         $filenames = [
             'sylius.png',
-            'symfony.png'
+            'symfony.png',
         ];
 
         return $filenames[array_rand($filenames)];
