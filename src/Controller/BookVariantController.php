@@ -50,7 +50,7 @@ class BookVariantController extends AbstractController
         }
 
         return $this->json($bookVariant, 200, [], [
-            'groups' => ['bookVariant:read', 'app:read']
+            'groups' => ['bookVariant:read', 'app:read'],
         ]);
     }
 

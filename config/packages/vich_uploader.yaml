@@ -6,9 +6,15 @@ knp_gaufrette:
       local:
         directory: "%kernel.project_dir%/public/images/authors"
 
+    bookImage_adapter:
+      local:
+        directory: "%kernel.project_dir%/public/images/bookImages"
+
   filesystems:
     author_fs:
       adapter: author_adapter
+    bookImage_fs:
+      adapter: bookImage_adapter
 
 vich_uploader:
   db_driver: orm
@@ -25,6 +31,13 @@ vich_uploader:
       inject_on_load: true
       delete_on_remove: true
       delete_on_update: true
+    bookImages:
+      uri_prefix: /images/bookImages
+      upload_destination: bookImage_fs
+      namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+      inject_on_load: true
+      delete_on_remove: true
+      delete_on_update: true
 
 when@test:
   knp_gaufrette:
@@ -32,3 +45,6 @@ when@test:
       author_adapter:
         local:
           directory: "%kernel.cache_dir%/images/authors"
+      bookImage_adapter:
+        local:
+          directory: "%kernel.cache_dir%/images/bookImages"
