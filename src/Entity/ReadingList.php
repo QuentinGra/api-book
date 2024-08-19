@@ -18,10 +18,6 @@ class ReadingList
 {
     use DateTimeTrait;
 
-    public const STATUS_READING = 'reading';
-    public const STATUS_READ = 'read';
-    public const STATUS_WISH = 'wish';
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -34,31 +30,18 @@ class ReadingList
     #[Groups(['readingList:read'])]
     private ?string $name = null;
 
-    #[ORM\Column(length: 50)]
-    #[Assert\Length(max: 50)]
-    #[Assert\NotBlank]
-    #[Assert\Choice(
-        choices: [
-            self::STATUS_READING,
-            self::STATUS_READ,
-            self::STATUS_WISH,
-        ]
-    )]
-    #[Groups(['readingList:read'])]
-    private ?string $status = null;
-
-    /**
-     * @var Collection<int, Book>
-     */
-    #[ORM\ManyToMany(targetEntity: Book::class)]
-    private Collection $books;
-
     #[ORM\ManyToOne(inversedBy: 'readingLists')]
     private ?User $user = null;
 
+    /**
+     * @var Collection<int, ReadingListBook>
+     */
+    #[ORM\OneToMany(targetEntity: ReadingListBook::class, mappedBy: 'readingList')]
+    private Collection $readingListBooks;
+
     public function __construct()
     {
-        $this->books = new ArrayCollection();
+        $this->readingListBooks = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -78,42 +61,6 @@ class ReadingList
         return $this;
     }
 
-    public function getStatus(): ?string
-    {
-        return $this->status;
-    }
-
-    public function setStatus(string $status): static
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Book>
-     */
-    public function getBooks(): Collection
-    {
-        return $this->books;
-    }
-
-    public function addBook(Book $book): static
-    {
-        if (!$this->books->contains($book)) {
-            $this->books->add($book);
-        }
-
-        return $this;
-    }
-
-    public function removeBook(Book $book): static
-    {
-        $this->books->removeElement($book);
-
-        return $this;
-    }
-
     public function getUser(): ?User
     {
         return $this->user;
@@ -122,6 +69,36 @@ class ReadingList
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ReadingListBook>
+     */
+    public function getReadingListBooks(): Collection
+    {
+        return $this->readingListBooks;
+    }
+
+    public function addReadingListBook(ReadingListBook $readingListBook): static
+    {
+        if (!$this->readingListBooks->contains($readingListBook)) {
+            $this->readingListBooks->add($readingListBook);
+            $readingListBook->setReadingList($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReadingListBook(ReadingListBook $readingListBook): static
+    {
+        if ($this->readingListBooks->removeElement($readingListBook)) {
+            // set the owning side to null (unless already changed)
+            if ($readingListBook->getReadingList() === $this) {
+                $readingListBook->setReadingList(null);
+            }
+        }
 
         return $this;
     }

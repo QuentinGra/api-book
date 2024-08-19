@@ -1,0 +1,15 @@
+include:
+  - UserFixtures.yaml
+  - BookFixtures.yaml
+
+App\Entity\ReadingList:
+  reading_list_{1..5}:
+    name (unique): <sentence()>
+    user: "@user_<current()>"
+
+
+App\Entity\ReadingListBook:
+  reading_book_list_{1..5}:
+    readingList: "@reading_list_*"
+    book: "@book_*"
+    status: <randomElement(['wish', 'reading', 'read'])>

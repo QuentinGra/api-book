@@ -32,6 +32,22 @@ class BookRepository extends ServiceEntityRepository
         );
     }
 
+    public function findBooksByReadingList(int $id, ?string $status = null): iterable
+    {
+        $query = $this->createQueryBuilder('b')
+            ->select('b', 'rlb')
+            ->join('b.readingListBooks', 'rlb')
+            ->join('rlb.readingList', 'rl')
+            ->andWhere('rl.id = :id')
+            ->setParameter('id', $id);
+        if ($status) {
+            $query->andWhere('rlb.status = :status')
+                ->setParameter('status', $status);
+        }
+
+        return $query->getQuery()->getResult();
+    }
+
     //    /**
     //     * @return Book[] Returns an array of Book objects
     //     */
