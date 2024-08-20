@@ -25,14 +25,11 @@ class AuthorController extends AbstractController
         private readonly EntityManagerInterface $em,
         private readonly SerializerInterface $serializer,
         private readonly ValidatorInterface $validator,
-    ) {
-    }
+    ) {}
 
     #[Route('', name: '.index', methods: ['GET'])]
     public function index(): JsonResponse
     {
-        // TODO: Modification findAll -> findAllWithPagination
-
         return $this->json(
             $this->authorRepo->findAll(),
             200,
@@ -73,12 +70,6 @@ class AuthorController extends AbstractController
         }
 
         $author->setImage($image);
-
-        $errors = $this->validator->validate($author);
-
-        if (count($errors) > 0) {
-            return $this->json($errors, 422);
-        }
 
         $this->em->persist($author);
         $this->em->flush();

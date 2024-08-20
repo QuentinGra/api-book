@@ -23,8 +23,7 @@ class BookController extends AbstractController
         private readonly EntityManagerInterface $em,
         private readonly SerializerInterface $serializer,
         private readonly ValidatorInterface $validator,
-    ) {
-    }
+    ) {}
 
     #[Route('', name: '.index', methods: ['GET'])]
     public function index(): JsonResponse
@@ -59,11 +58,6 @@ class BookController extends AbstractController
         #[MapRequestPayload]
         Book $book,
     ): JsonResponse {
-        $errors = $this->validator->validate($book);
-
-        if (count($errors) > 0) {
-            return $this->json($errors, 422);
-        }
 
         $this->em->persist($book);
         $this->em->flush();

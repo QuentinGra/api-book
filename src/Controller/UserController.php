@@ -26,8 +26,7 @@ class UserController extends AbstractController
         private readonly UserPasswordHasherInterface $hasher,
         private readonly SerializerInterface $serializer,
         private readonly ValidatorInterface $validator
-    ) {
-    }
+    ) {}
 
     #[Route('', name: '.index', methods: ['GET'])]
     #[IsGranted('ROLE_ADMIN')]
@@ -67,11 +66,6 @@ class UserController extends AbstractController
         #[MapRequestPayload]
         User $user,
     ): JsonResponse {
-        $errors = $this->validator->validate($user);
-
-        if (count($errors) > 0) {
-            return $this->json($errors, 422);
-        }
 
         $user->setPassword(
             $this->hasher->hashPassword($user, $user->getPassword())

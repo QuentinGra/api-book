@@ -23,14 +23,11 @@ class EditionController extends AbstractController
         private readonly EntityManagerInterface $em,
         private readonly SerializerInterface $serializer,
         private readonly ValidatorInterface $validator,
-    ) {
-    }
+    ) {}
 
     #[Route('', name: '.index', methods: ['GET'])]
     public function index(): JsonResponse
     {
-        // TODO: Modification findAll -> findAllWithPagination
-
         return $this->json(
             $this->editionRepo->findAll(),
             200,
@@ -61,11 +58,6 @@ class EditionController extends AbstractController
         #[MapRequestPayload]
         Edition $edition,
     ): JsonResponse {
-        $errors = $this->validator->validate($edition);
-
-        if (count($errors) > 0) {
-            return $this->json($errors, 422);
-        }
 
         $this->em->persist($edition);
         $this->em->flush();

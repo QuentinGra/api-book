@@ -26,8 +26,7 @@ class ReadingListController extends AbstractController
         private readonly EntityManagerInterface $em,
         private readonly SerializerInterface $serializer,
         private readonly ValidatorInterface $validator,
-    ) {
-    }
+    ) {}
 
     #[Route('', name: '.index', methods: ['GET'])]
     public function index(): JsonResponse
@@ -101,12 +100,6 @@ class ReadingListController extends AbstractController
                 'status' => 'error',
                 'message' => 'You can only have 10 reading lists',
             ], 400);
-        }
-
-        $errors = $this->validator->validate($readingList);
-
-        if (count($errors) > 0) {
-            return $this->json($errors, 422);
         }
 
         $readingList->setUser($user);
