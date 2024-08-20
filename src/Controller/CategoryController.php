@@ -23,14 +23,11 @@ class CategoryController extends AbstractController
         private readonly EntityManagerInterface $em,
         private readonly SerializerInterface $serializer,
         private readonly ValidatorInterface $validator,
-    ) {
-    }
+    ) {}
 
     #[Route('', name: '.index', methods: ['GET'])]
     public function index(): JsonResponse
     {
-        // TODO: Modification findAll -> findAllWithPagination
-
         return $this->json(
             $this->categoryRepo->findAll(),
             200,
@@ -61,11 +58,6 @@ class CategoryController extends AbstractController
         #[MapRequestPayload]
         Category $category,
     ): JsonResponse {
-        $errors = $this->validator->validate($category);
-
-        if (count($errors) > 0) {
-            return $this->json($errors, 422);
-        }
 
         $this->em->persist($category);
         $this->em->flush();
