@@ -58,7 +58,6 @@ class BookController extends AbstractController
         #[MapRequestPayload]
         Book $book,
     ): JsonResponse {
-        $this->validator->validate($book);
 
         $this->em->persist($book);
         $this->em->flush();
@@ -82,7 +81,11 @@ class BookController extends AbstractController
             'object_to_populate' => $book,
         ]);
 
-        $this->validator->validate($book);
+        $errors = $this->validator->validate($book);
+
+        if (count($errors) > 0) {
+            return $this->json($errors, 422);
+        }
 
         $this->em->persist($book);
         $this->em->flush();
