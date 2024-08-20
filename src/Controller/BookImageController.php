@@ -15,6 +15,7 @@ use Symfony\Component\HttpKernel\Attribute\MapUploadedFile;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+
 #[Route('/api/book-image', name: 'api.book-image')]
 #[OA\Tag(name: 'BookImage')]
 class BookImageController extends AbstractController
@@ -23,8 +24,7 @@ class BookImageController extends AbstractController
         private readonly BookImageRepository $bookImageRepo,
         private readonly EntityManagerInterface $em,
         private readonly ValidatorInterface $validator,
-    ) {
-    }
+    ) {}
 
     #[Route('', name: '.index', methods: ['GET'])]
     public function index(): JsonResponse
@@ -76,12 +76,6 @@ class BookImageController extends AbstractController
         }
 
         $bookImage->setImage($image);
-
-        $errors = $this->validator->validate($bookImage);
-
-        if (count($errors) > 0) {
-            return $this->json($errors, 422);
-        }
 
         $this->em->persist($bookImage);
         $this->em->flush();
