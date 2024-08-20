@@ -2,14 +2,14 @@
 
 namespace App\Entity;
 
+use App\Entity\Utils\DateTimeTrait;
+use App\Repository\ReadingListRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use App\Entity\Utils\DateTimeTrait;
-use App\Repository\ReadingListRepository;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: ReadingListRepository::class)]
 #[UniqueEntity(fields: ['name'], message: 'Une categorie existe déjàs avec ce nom')]

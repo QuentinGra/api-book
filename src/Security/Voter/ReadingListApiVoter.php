@@ -3,6 +3,7 @@
 namespace App\Security\Voter;
 
 use App\Entity\ReadingList;
+use App\Entity\ReadingListBook;
 use App\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
@@ -17,7 +18,8 @@ class ReadingListApiVoter extends Voter
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
         return in_array($attribute, [self::OWNER])
-            && $subject instanceof ReadingList;
+            && ($subject instanceof ReadingList
+                || $subject instanceof ReadingListBook);
     }
 
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
@@ -32,8 +34,14 @@ class ReadingListApiVoter extends Voter
             return false;
         }
 
-        if ($subject->getUser() === $user || in_array('ROLE_ADMIN', $user->getRoles())) {
-            return true;
+        if ($subject instanceof ReadingList) {
+            if ($subject->getUser() === $user || in_array('ROLE_ADMIN', $user->getRoles())) {
+                return true;
+            }
+        } else {
+            if ($subject->getReadingList()->getUser() === $user || in_array('ROLE_ADMIN', $user->getRoles())) {
+                return true;
+            }
         }
 
         return false;

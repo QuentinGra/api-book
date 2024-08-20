@@ -2,8 +2,8 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ReadingListBookRepository;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -19,10 +19,10 @@ class ReadingListBook
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'readingListBooks')]
+    #[ORM\ManyToOne(inversedBy: 'readingListBooks', cascade: ['persist'])]
     private ?Book $book = null;
 
-    #[ORM\ManyToOne(inversedBy: 'readingListBooks')]
+    #[ORM\ManyToOne(inversedBy: 'readingListBooks', cascade: ['persist'])]
     private ?ReadingList $readingList = null;
 
     #[ORM\Column(length: 50)]
@@ -35,7 +35,7 @@ class ReadingListBook
             self::STATUS_WISH,
         ]
     )]
-    #[Groups(['readingList:read'])]
+    #[Groups(['readingList:read', 'readingListBook:read'])]
     private ?string $status = null;
 
     public function __construct()
