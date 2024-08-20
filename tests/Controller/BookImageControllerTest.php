@@ -4,15 +4,13 @@ namespace App\Tests\Controller;
 
 use App\Entity\Book;
 use App\Entity\User;
-use App\Entity\BookImage;
 use App\Repository\BookRepository;
 use App\Repository\UserRepository;
-use App\Repository\BookImageRepository;
+use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
+use Liip\TestFixturesBundle\Services\DatabaseTools\ORMDatabaseTool;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
-use Liip\TestFixturesBundle\Services\DatabaseTools\ORMDatabaseTool;
 
 class BookImageControllerTest extends WebTestCase
 {
@@ -26,8 +24,8 @@ class BookImageControllerTest extends WebTestCase
         $this->databaseTool = self::getContainer()->get(DatabaseToolCollection::class)->get();
 
         $this->databaseTool->loadAliceFixture([
-            \dirname(__DIR__) . '/Fixtures/UserFixtures.yaml',
-            \dirname(__DIR__) . '/Fixtures/BookImageFixtures.yaml',
+            \dirname(__DIR__).'/Fixtures/UserFixtures.yaml',
+            \dirname(__DIR__).'/Fixtures/BookImageFixtures.yaml',
         ]);
     }
 
@@ -66,7 +64,7 @@ class BookImageControllerTest extends WebTestCase
     {
         $book = $this->getBook();
         $this->client->loginUser($this->getUser());
-        $this->client->request('GET', '/api/book-image/' . $book->getId());
+        $this->client->request('GET', '/api/book-image/'.$book->getId());
 
         $this->assertResponseStatusCodeSame(200);
     }
@@ -75,7 +73,7 @@ class BookImageControllerTest extends WebTestCase
     {
         $book = $this->getBook();
         $this->client->loginUser($this->getAdminUser());
-        $this->client->request('GET', '/api/book-image/' . $book->getId());
+        $this->client->request('GET', '/api/book-image/'.$book->getId());
 
         $this->assertResponseStatusCodeSame(200);
     }
@@ -101,7 +99,7 @@ class BookImageControllerTest extends WebTestCase
             '/api/book-image/create',
             $data,
             [
-                'image' => new UploadedFile(\dirname(__DIR__) . '/Assets/Images/sylius.png', 'sylius.png'),
+                'image' => new UploadedFile(\dirname(__DIR__).'/Assets/Images/sylius.png', 'sylius.png'),
             ]
         );
 
@@ -121,7 +119,7 @@ class BookImageControllerTest extends WebTestCase
             '/api/book-image/create',
             $data,
             [
-                'image' => new UploadedFile(\dirname(__DIR__) . '/Assets/Images/sylius.png', 'sylius.png'),
+                'image' => new UploadedFile(\dirname(__DIR__).'/Assets/Images/sylius.png', 'sylius.png'),
             ]
         );
 
@@ -132,7 +130,7 @@ class BookImageControllerTest extends WebTestCase
     {
         $book = $this->getBook();
         $this->client->loginUser($this->getUser());
-        $this->client->request('DELETE', '/api/book-image/' . $book->getId());
+        $this->client->request('DELETE', '/api/book-image/'.$book->getId());
 
         $this->assertResponseStatusCodeSame(403);
     }
@@ -141,7 +139,7 @@ class BookImageControllerTest extends WebTestCase
     {
         $book = $this->getBook();
         $this->client->loginUser($this->getAdminUser());
-        $this->client->request('DELETE', '/api/book-image/' . $book->getId());
+        $this->client->request('DELETE', '/api/book-image/'.$book->getId());
 
         $this->assertResponseStatusCodeSame(200);
     }

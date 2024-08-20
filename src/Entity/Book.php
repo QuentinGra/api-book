@@ -33,7 +33,7 @@ class Book
         maxMessage: 'Le nom ne peut pas dépasser {{ limit }} caractères.',
     )]
     #[Assert\NotBlank]
-    #[Groups(['book:read'])]
+    #[Groups(['book:read', 'readingList:read'])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT)]
@@ -43,7 +43,7 @@ class Book
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     #[Assert\NotBlank]
-    #[Groups(['book:read'])]
+    #[Groups(['book:read', 'readingList:read'])]
     private ?\DateTimeInterface $dateEdition = null;
 
     /**
@@ -76,13 +76,22 @@ class Book
      * @var Collection<int, BookImage>
      */
     #[ORM\OneToMany(targetEntity: BookImage::class, mappedBy: 'book')]
+    #[Groups(['readingList:read'])]
     private Collection $bookImages;
+
+    /**
+     * @var Collection<int, ReadingListBook>
+     */
+    #[ORM\OneToMany(targetEntity: ReadingListBook::class, mappedBy: 'book')]
+    #[Groups(['readingList:read'])]
+    private Collection $readingListBooks;
 
     public function __construct()
     {
         $this->categories = new ArrayCollection();
         $this->bookVariants = new ArrayCollection();
         $this->bookImages = new ArrayCollection();
+        $this->readingListBooks = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -229,5 +238,13 @@ class Book
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, ReadingListBook>
+     */
+    public function getReadingListBooks(): Collection
+    {
+        return $this->readingListBooks;
     }
 }

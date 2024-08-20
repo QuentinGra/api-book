@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Entity\Utils\DateTimeTrait;
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -66,6 +68,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     #[Groups(['user:read'])]
     private ?\DateTimeInterface $birthDate = null;
+
+    /**
+     * @var Collection<int, ReadingList>
+     */
+    #[ORM\OneToMany(targetEntity: ReadingList::class, mappedBy: 'user')]
+    private Collection $readingLists;
+
+    public function __construct()
+    {
+        $this->readingLists = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -174,6 +187,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setBirthDate(?\DateTimeInterface $birthDate): static
     {
         $this->birthDate = $birthDate;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ReadingList>
+     */
+    public function getReadingLists(): Collection
+    {
+        return $this->readingLists;
+    }
+
+    public function addReadingList(ReadingList $readingList): static
+    {
+        if (!$this->readingLists->contains($readingList)) {
+            $this->readingLists->add($readingList);
+            $readingList->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReadingList(ReadingList $readingList): static
+    {
+        if ($this->readingLists->removeElement($readingList)) {
+            // set the owning side to null (unless already changed)
+            if ($readingList->getUser() === $this) {
+                $readingList->setUser(null);
+            }
+        }
 
         return $this;
     }
