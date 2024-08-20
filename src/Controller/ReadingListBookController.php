@@ -22,19 +22,13 @@ class ReadingListBookController extends AbstractController
         private readonly ValidatorInterface $validator,
         private readonly SerializerInterface $serializer,
         private readonly ReadingListBookRepository $readingListBookRepo,
-    ) {
-    }
+    ) {}
 
     #[Route('/add', name: '.add', methods: ['POST'])]
     public function addBook(
         #[MapRequestPayload]
         ReadingListBook $readingListBook,
     ): JsonResponse {
-        $errors = $this->validator->validate($readingListBook);
-
-        if (count($errors) > 0) {
-            return $this->json($errors, 422);
-        }
 
         $this->em->persist($readingListBook);
         $this->em->flush();
