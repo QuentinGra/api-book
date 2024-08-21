@@ -6,6 +6,7 @@ use App\Entity\Utils\DateTimeTrait;
 use App\Repository\RatingRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: RatingRepository::class)]
@@ -17,10 +18,12 @@ class Rating
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['rating:read'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'ratings')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['rating:read'])]
     private ?Book $book = null;
 
     #[ORM\ManyToOne(inversedBy: 'ratings')]
@@ -34,6 +37,7 @@ class Rating
         max: 5,
         notInRangeMessage: 'La note doit être comprise entre {{ min }} et {{ max }}.'
     )]
+    #[Groups(['rating:read'])]
     private ?int $rating = null;
 
     public function getId(): ?int

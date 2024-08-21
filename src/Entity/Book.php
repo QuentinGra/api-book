@@ -33,7 +33,7 @@ class Book
         maxMessage: 'Le nom ne peut pas dépasser {{ limit }} caractères.',
     )]
     #[Assert\NotBlank]
-    #[Groups(['book:read', 'readingList:read'])]
+    #[Groups(['book:read', 'readingList:read', 'rating:read'])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT)]
@@ -76,7 +76,7 @@ class Book
      * @var Collection<int, BookImage>
      */
     #[ORM\OneToMany(targetEntity: BookImage::class, mappedBy: 'book')]
-    #[Groups(['readingList:read'])]
+    #[Groups(['readingList:read', 'rating:read'])]
     private Collection $bookImages;
 
     /**
