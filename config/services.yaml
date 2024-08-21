@@ -45,6 +45,11 @@ services:
       $normalizer: "@serializer.normalizer.object"
     tags: ["serializer.normalizer"]
 
+  App\Serializer\RatingNormalizer:
+    arguments:
+      $normalizer: "@serializer.normalizer.object"
+    tags: ["serializer.normalizer"]
+  
   App\Serializer\BookImageNormalizer:
     arguments:
       $normalizer: "@serializer.normalizer.object"
