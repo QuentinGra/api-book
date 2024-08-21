@@ -33,7 +33,7 @@ class Book
         maxMessage: 'Le nom ne peut pas dépasser {{ limit }} caractères.',
     )]
     #[Assert\NotBlank]
-    #[Groups(['book:read', 'readingList:read'])]
+    #[Groups(['book:read', 'readingList:read', 'rating:read'])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT)]
@@ -76,7 +76,7 @@ class Book
      * @var Collection<int, BookImage>
      */
     #[ORM\OneToMany(targetEntity: BookImage::class, mappedBy: 'book')]
-    #[Groups(['readingList:read'])]
+    #[Groups(['readingList:read', 'rating:read'])]
     private Collection $bookImages;
 
     /**
@@ -86,12 +86,19 @@ class Book
     #[Groups(['readingList:read'])]
     private Collection $readingListBooks;
 
+    /**
+     * @var Collection<int, Rating>
+     */
+    #[ORM\OneToMany(targetEntity: Rating::class, mappedBy: 'book')]
+    private Collection $ratings;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
         $this->bookVariants = new ArrayCollection();
         $this->bookImages = new ArrayCollection();
         $this->readingListBooks = new ArrayCollection();
+        $this->ratings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -246,5 +253,35 @@ class Book
     public function getReadingListBooks(): Collection
     {
         return $this->readingListBooks;
+    }
+
+    /**
+     * @return Collection<int, Rating>
+     */
+    public function getRatings(): Collection
+    {
+        return $this->ratings;
+    }
+
+    public function addRating(Rating $rating): static
+    {
+        if (!$this->ratings->contains($rating)) {
+            $this->ratings->add($rating);
+            $rating->setBook($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRating(Rating $rating): static
+    {
+        if ($this->ratings->removeElement($rating)) {
+            // set the owning side to null (unless already changed)
+            if ($rating->getBook() === $this) {
+                $rating->setBook(null);
+            }
+        }
+
+        return $this;
     }
 }
