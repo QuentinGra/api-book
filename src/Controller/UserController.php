@@ -45,6 +45,23 @@ class UserController extends AbstractController
         );
     }
 
+    #[Route('/me', name: '.me', methods: ['GET'])]
+    public function me(): JsonResponse
+    {
+        $user = $this->getUser();
+
+        if (!$user) {
+            return $this->json([
+                'status' => 'error',
+                'message' => 'User not authenticated',
+            ], 401);
+        }
+
+        return $this->json($user, 200, [], [
+            'groups' => ['user:read', 'app:read'],
+        ]);
+    }
+
     #[Route('/{id}', name: '.show', methods: ['GET'])]
     #[IsGranted('USER_OWNER', 'user', 'User not found', 404)]
     public function show(?User $user): JsonResponse
