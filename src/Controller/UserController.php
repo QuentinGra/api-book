@@ -45,24 +45,7 @@ class UserController extends AbstractController
         );
     }
 
-    #[Route('/me', name: '.me', methods: ['GET'])]
-    public function me(): JsonResponse
-    {
-        $user = $this->getUser();
-
-        if (!$user) {
-            return $this->json([
-                'status' => 'error',
-                'message' => 'User not authenticated',
-            ], 401);
-        }
-
-        return $this->json($user, 200, [], [
-            'groups' => ['user:read', 'app:read'],
-        ]);
-    }
-
-    #[Route('/{id}', name: '.show', methods: ['GET'])]
+    #[Route('/{id<\d+>}', name: '.show', methods: ['GET'])]
     #[IsGranted('USER_OWNER', 'user', 'User not found', 404)]
     public function show(?User $user): JsonResponse
     {
@@ -97,7 +80,7 @@ class UserController extends AbstractController
         ], 201);
     }
 
-    #[Route('/{id}', name: '.update', methods: ['PUT', 'PATCH'])]
+    #[Route('/{id<\d+>}', name: '.update', methods: ['PUT', 'PATCH'])]
     #[IsGranted('USER_OWNER', 'user', 'User not found', 404)]
     public function update(Request $request, ?User $user): JsonResponse
     {
@@ -133,7 +116,7 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: '.delete', methods: ['DELETE'])]
+    #[Route('/{id<\d+>}', name: '.delete', methods: ['DELETE'])]
     #[IsGranted('USER_OWNER', 'user', 'User not found', 404)]
     public function delete(?User $user): JsonResponse
     {
@@ -151,5 +134,36 @@ class UserController extends AbstractController
             'status' => 'success',
             'message' => 'User deleted',
         ], 200);
+    }
+
+    #[Route('/me', name: '.me', methods: ['GET'])]
+    public function me(): JsonResponse
+    {
+        $user = $this->getUser();
+
+        if (!$user) {
+            return $this->json([
+                'status' => 'error',
+                'message' => 'User not authenticated',
+            ], 401);
+        }
+
+        return $this->json($user, 200, [], [
+            'groups' => ['user:read', 'app:read'],
+        ]);
+    }
+
+    #[Route('/logout', name: 'api.user.logout', methods: ['GET'])]
+    public function logout(): JsonResponse
+    {
+        $response = new JsonResponse([
+            'status' => 'success',
+            'message' => 'User logged out',
+        ], 200);
+
+        // Supprimez le cookie en définissant une date d'expiration passée
+        $response->headers->clearCookie('BEARER', '/', null, true, true);
+
+        return $response;
     }
 }
