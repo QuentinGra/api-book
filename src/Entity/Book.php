@@ -75,21 +75,21 @@ class Book
     /**
      * @var Collection<int, BookImage>
      */
-    #[ORM\OneToMany(targetEntity: BookImage::class, mappedBy: 'book')]
+    #[ORM\OneToMany(targetEntity: BookImage::class, mappedBy: 'book', cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[Groups(['readingList:read', 'rating:read'])]
     private Collection $bookImages;
 
     /**
      * @var Collection<int, ReadingListBook>
      */
-    #[ORM\OneToMany(targetEntity: ReadingListBook::class, mappedBy: 'book')]
+    #[ORM\OneToMany(targetEntity: ReadingListBook::class, mappedBy: 'book', cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[Groups(['readingList:read'])]
     private Collection $readingListBooks;
 
     /**
      * @var Collection<int, Rating>
      */
-    #[ORM\OneToMany(targetEntity: Rating::class, mappedBy: 'book')]
+    #[ORM\OneToMany(targetEntity: Rating::class, mappedBy: 'book', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $ratings;
 
     public function __construct()

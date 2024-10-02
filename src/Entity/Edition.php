@@ -43,7 +43,7 @@ class Edition
     /**
      * @var Collection<int, Book>
      */
-    #[ORM\OneToMany(targetEntity: Book::class, mappedBy: 'edition')]
+    #[ORM\OneToMany(targetEntity: Book::class, mappedBy: 'edition', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $books;
 
     public function __construct()
