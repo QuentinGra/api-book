@@ -23,6 +23,7 @@ class BookVariant
     public const TYPE_BROCHER = 'brocher';
     public const TYPE_POCHE = 'poche';
     public const TYPE_RELIER = 'relier';
+    public const TYPE_EBOOK = 'ebook';
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -35,7 +36,10 @@ class BookVariant
     #[Assert\NotBlank]
     #[Assert\Choice(
         choices: [
-            self::TYPE_BROCHER, self::TYPE_POCHE, self::TYPE_RELIER,
+            self::TYPE_BROCHER,
+            self::TYPE_POCHE,
+            self::TYPE_RELIER,
+            self::TYPE_EBOOK,
         ]
     )]
     #[Groups(['bookVariant:read', 'book:read'])]
