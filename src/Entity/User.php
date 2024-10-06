@@ -72,13 +72,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, ReadingList>
      */
-    #[ORM\OneToMany(targetEntity: ReadingList::class, mappedBy: 'user')]
+    #[ORM\OneToMany(targetEntity: ReadingList::class, mappedBy: 'user', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $readingLists;
 
     /**
      * @var Collection<int, Rating>
      */
-    #[ORM\OneToMany(targetEntity: Rating::class, mappedBy: 'user')]
+    #[ORM\OneToMany(targetEntity: Rating::class, mappedBy: 'user', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $ratings;
 
     public function __construct()
