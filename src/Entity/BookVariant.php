@@ -28,7 +28,7 @@ class BookVariant
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['bookVariant:read'])]
+    #[Groups(['bookVariant:read', 'book:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]

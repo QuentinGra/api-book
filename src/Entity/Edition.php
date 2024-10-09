@@ -24,7 +24,7 @@ class Edition
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['edition:read'])]
+    #[Groups(['edition:read', 'book:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
