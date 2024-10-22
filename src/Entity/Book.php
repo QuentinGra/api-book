@@ -24,7 +24,7 @@ class Book
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['book:read'])]
+    #[Groups(['book:read', 'category:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
@@ -33,7 +33,7 @@ class Book
         maxMessage: 'Le nom ne peut pas dépasser {{ limit }} caractères.',
     )]
     #[Assert\NotBlank]
-    #[Groups(['book:read', 'readingList:read', 'rating:read'])]
+    #[Groups(['book:read', 'readingList:read', 'rating:read', 'category:read'])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT)]
@@ -61,7 +61,7 @@ class Book
 
     #[ORM\ManyToOne(inversedBy: 'books', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['book:read'])]
+    #[Groups(['book:read', 'category:read'])]
     #[Assert\NotBlank]
     private ?Author $author = null;
 
@@ -76,7 +76,7 @@ class Book
      * @var Collection<int, BookImage>
      */
     #[ORM\OneToMany(targetEntity: BookImage::class, mappedBy: 'book', cascade: ['persist', 'remove'], orphanRemoval: true)]
-    #[Groups(['readingList:read', 'rating:read'])]
+    #[Groups(['readingList:read', 'rating:read', 'category:read'])]
     private Collection $bookImages;
 
     /**

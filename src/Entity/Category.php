@@ -2,16 +2,18 @@
 
 namespace App\Entity;
 
-use App\Entity\Utils\DateTimeTrait;
-use App\Entity\Utils\EnableTrait;
-use App\Repository\CategoryRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use App\Entity\Utils\EnableTrait;
+use App\Entity\Utils\DateTimeTrait;
+use App\Repository\CategoryRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Attribute\Ignore;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 #[UniqueEntity(fields: ['name'], message: 'Une categorie existe déjàs avec ce nom')]
@@ -44,6 +46,7 @@ class Category
      * @var Collection<int, Book>
      */
     #[ORM\ManyToMany(targetEntity: Book::class, mappedBy: 'categories')]
+    #[Groups(['category:read'])]
     private Collection $books;
 
     public function __construct()
