@@ -35,7 +35,7 @@ class Author
         maxMessage: 'Le prénom ne peut pas dépasser {{ limit }} caractères.',
     )]
     #[Assert\NotBlank]
-    #[Groups(['author:read', 'book:read'])]
+    #[Groups(['author:read', 'book:read', 'category:read'])]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 255)]
@@ -44,7 +44,7 @@ class Author
         maxMessage: 'Le prénom ne peut pas dépasser {{ limit }} caractères.',
     )]
     #[Assert\NotBlank]
-    #[Groups(['author:read', 'book:read'])]
+    #[Groups(['author:read', 'book:read', 'category:read'])]
     private ?string $lastName = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
