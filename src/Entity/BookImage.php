@@ -31,7 +31,7 @@ class BookImage
     private ?File $image = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['bookImage:read', 'category:read', 'readingList:read', 'rating:read'])]
+    #[Groups(['book:read', 'bookImage:read', 'category:read', 'readingList:read', 'rating:read'])]
     private ?string $imageName = null;
 
     #[ORM\ManyToOne(inversedBy: 'bookImages', cascade: ['persist'])]

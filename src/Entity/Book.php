@@ -76,7 +76,7 @@ class Book
      * @var Collection<int, BookImage>
      */
     #[ORM\OneToMany(targetEntity: BookImage::class, mappedBy: 'book', cascade: ['persist', 'remove'], orphanRemoval: true)]
-    #[Groups(['readingList:read', 'rating:read', 'category:read'])]
+    #[Groups(['book:read', 'readingList:read', 'rating:read', 'category:read'])]
     private Collection $bookImages;
 
     /**
