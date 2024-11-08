@@ -38,7 +38,7 @@ class BookController extends AbstractController
         );
     }
 
-    #[Route('/{id}', name: '.show', methods: ['GET'])]
+    #[Route('/{id<\d+>}', name: '.show', methods: ['GET'])]
     public function show(?Book $book): JsonResponse
     {
         if (!$book) {
@@ -49,6 +49,16 @@ class BookController extends AbstractController
         }
 
         return $this->json($book, 200, [], [
+            'groups' => ['book:read', 'app:read'],
+        ]);
+    }
+
+    #[Route('/latest', name: '.latest', methods: ['GET'])]
+    public function latest(): JsonResponse
+    {
+        $latestBooks = $this->bookRepo->findBy([], ['createdAt' => 'DESC'], 3);
+
+        return $this->json($latestBooks, 200, [], [
             'groups' => ['book:read', 'app:read'],
         ]);
     }
