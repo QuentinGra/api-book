@@ -17,6 +17,7 @@ class ReadingListBook
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['readingList:read'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'readingListBooks', cascade: ['persist'])]
