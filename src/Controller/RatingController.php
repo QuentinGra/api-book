@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Book;
 use App\Entity\Rating;
 use App\Repository\RatingRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -47,6 +48,35 @@ class RatingController extends AbstractController
                 'groups' => ['rating:read', 'app:read'],
             ]
         );
+    }
+
+    #[Route('/book/{book}', name: '.show', methods: ['GET'])]
+    public function show(?Book $book): JsonResponse
+    {
+        $user = $this->getUser();
+
+        if (!$user) {
+            return $this->json([
+                'status' => 'error',
+                'message' => 'User not authenticated',
+            ], 401);
+        }
+
+        $rating = $this->ratingRepo->findOneBy([
+            'book' => $book,
+            'user' => $user,
+        ]);
+
+        if (!$rating) {
+            return $this->json([
+                'status' => 'error',
+                'message' => 'Rating not found',
+            ], 404);
+        }
+
+        return $this->json($rating, 200, [], [
+            'groups' => ['rating:read', 'app:read'],
+        ]);
     }
 
     #[Route('/create', name: '.create', methods: ['POST'])]
