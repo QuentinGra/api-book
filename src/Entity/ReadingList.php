@@ -35,6 +35,7 @@ class ReadingList
      * @var Collection<int, ReadingListBook>
      */
     #[ORM\OneToMany(targetEntity: ReadingListBook::class, mappedBy: 'readingList', cascade: ['remove'])]
+    #[Groups(['readingList:read'])]
     private Collection $readingListBooks;
 
     public function __construct()

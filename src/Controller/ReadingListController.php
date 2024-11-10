@@ -54,26 +54,18 @@ class ReadingListController extends AbstractController
         );
     }
 
-    #[Route('/{id}/{status}', name: '.show', methods: ['GET'], defaults: ['status' => null])]
+    #[Route('/{id}', name: '.show', methods: ['GET'])]
     #[IsGranted('READING_LIST_OWNER', 'readingList', 'List not found', 404)]
-    /**
-     * Show all books in a reading list.
-     *
-     * @param iterable $readingList
-     */
-    public function show(
-        #[MapEntity(class: Book::class, expr: 'repository.findBooksByReadingList(id, status)')]
-        iterable $books,
-        ?ReadingList $readingList,
-    ): JsonResponse {
-        if (!$books) {
+    public function show(?ReadingList $readingList): JsonResponse
+    {
+        if (!$readingList) {
             return $this->json([
                 'status' => 'error',
-                'message' => 'there are no books in the reading list',
+                'message' => 'Reading list not found',
             ], 404);
         }
 
-        return $this->json($books, 200, [], [
+        return $this->json($readingList, 200, [], [
             'groups' => ['readingList:read', 'app:read'],
         ]);
     }

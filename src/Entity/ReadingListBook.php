@@ -20,6 +20,7 @@ class ReadingListBook
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'readingListBooks', cascade: ['persist'])]
+    #[Groups(['readingList:read'])]
     private ?Book $book = null;
 
     #[ORM\ManyToOne(inversedBy: 'readingListBooks', cascade: ['persist'])]

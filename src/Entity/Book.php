@@ -24,7 +24,7 @@ class Book
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['book:read', 'category:read'])]
+    #[Groups(['book:read', 'category:read', 'readingList:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
@@ -83,7 +83,6 @@ class Book
      * @var Collection<int, ReadingListBook>
      */
     #[ORM\OneToMany(targetEntity: ReadingListBook::class, mappedBy: 'book', cascade: ['persist', 'remove'], orphanRemoval: true)]
-    #[Groups(['readingList:read'])]
     private Collection $readingListBooks;
 
     /**
