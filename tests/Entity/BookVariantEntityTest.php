@@ -34,8 +34,8 @@ class BookVariantEntityTest extends KernelTestCase
     public function testRepositoryCount(): void
     {
         $this->databaseTool->loadAliceFixture([
-            \dirname(__DIR__).'/Fixtures/BookVariantFixtures.yaml',
-            \dirname(__DIR__).'/Fixtures/BookFixtures.yaml',
+            \dirname(__DIR__) . '/Fixtures/BookVariantFixtures.yaml',
+            \dirname(__DIR__) . '/Fixtures/BookFixtures.yaml',
         ]);
 
         $bookVariantRepo = self::getContainer()->get(BookVariantRepository::class);
@@ -48,7 +48,7 @@ class BookVariantEntityTest extends KernelTestCase
     private function getEntity(): BookVariant
     {
         return (new BookVariant())
-            ->setType('brocher')
+            ->setType('broché')
             ->setEnable(false)
             ->addBook($this->getBook());
     }

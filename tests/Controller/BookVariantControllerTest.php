@@ -23,8 +23,8 @@ class BookVariantControllerTest extends WebTestCase
         $this->databaseTool = self::getContainer()->get(DatabaseToolCollection::class)->get();
 
         $this->databaseTool->loadAliceFixture([
-            \dirname(__DIR__).'/Fixtures/UserFixtures.yaml',
-            \dirname(__DIR__).'/Fixtures/BookVariantFixtures.yaml',
+            \dirname(__DIR__) . '/Fixtures/UserFixtures.yaml',
+            \dirname(__DIR__) . '/Fixtures/BookVariantFixtures.yaml',
         ]);
     }
 
@@ -70,7 +70,7 @@ class BookVariantControllerTest extends WebTestCase
     public function testEndpointShowWithAdmin(): void
     {
         $this->client->loginUser($this->getAdminUser());
-        $this->client->request('GET', '/api/book-variant/'.$this->getBookVariant()->getId());
+        $this->client->request('GET', '/api/book-variant/' . $this->getBookVariant()->getId());
 
         $this->assertResponseStatusCodeSame(200);
     }
@@ -78,7 +78,7 @@ class BookVariantControllerTest extends WebTestCase
     public function testEndpointShowWithUser(): void
     {
         $this->client->loginUser($this->getUser());
-        $this->client->request('GET', '/api/book-variant/'.$this->getBookVariant()->getId());
+        $this->client->request('GET', '/api/book-variant/' . $this->getBookVariant()->getId());
 
         $this->assertResponseStatusCodeSame(200);
     }
@@ -86,7 +86,7 @@ class BookVariantControllerTest extends WebTestCase
     public function testEndpointCreateWithGoodCredentialsWithAdmin(): void
     {
         $data = [
-            'type' => 'brocher',
+            'type' => 'broché',
             'enable' => true,
         ];
 
@@ -106,7 +106,7 @@ class BookVariantControllerTest extends WebTestCase
     public function testEndpointCreateWithGoodCredentialsWithUser(): void
     {
         $data = [
-            'type' => 'brocher',
+            'type' => 'broché',
             'enable' => true,
         ];
 
@@ -145,7 +145,7 @@ class BookVariantControllerTest extends WebTestCase
 
     public function testEndpointUpdateWithBadId(): void
     {
-        $data = ['type' => 'brocher'];
+        $data = ['type' => 'broché'];
 
         $this->client->loginUser($this->getAdminUser());
         $this->client->request(
@@ -162,12 +162,12 @@ class BookVariantControllerTest extends WebTestCase
 
     public function testEndpointUpdateWithAdmin(): void
     {
-        $data = ['type' => 'brocher'];
+        $data = ['type' => 'broché'];
 
         $this->client->loginUser($this->getAdminUser());
         $this->client->request(
             'PATCH',
-            '/api/book-variant/'.$this->getBookVariant()->getId(),
+            '/api/book-variant/' . $this->getBookVariant()->getId(),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -184,7 +184,7 @@ class BookVariantControllerTest extends WebTestCase
         $this->client->loginUser($this->getAdminUser());
         $this->client->request(
             'PATCH',
-            '/api/book-variant/'.$this->getBookVariant()->getId(),
+            '/api/book-variant/' . $this->getBookVariant()->getId(),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -196,12 +196,12 @@ class BookVariantControllerTest extends WebTestCase
 
     public function testEndpointUpdateWithUser(): void
     {
-        $data = ['type' => 'brocher'];
+        $data = ['type' => 'broché'];
 
         $this->client->loginUser($this->getUser());
         $this->client->request(
             'PATCH',
-            '/api/book-variant/'.$this->getBookVariant()->getId(),
+            '/api/book-variant/' . $this->getBookVariant()->getId(),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -222,7 +222,7 @@ class BookVariantControllerTest extends WebTestCase
     public function testEndpointDeleteWithUser(): void
     {
         $this->client->loginUser($this->getUser());
-        $this->client->request('DELETE', '/api/book-variant/'.$this->getBookVariant()->getId());
+        $this->client->request('DELETE', '/api/book-variant/' . $this->getBookVariant()->getId());
 
         $this->assertResponseStatusCodeSame(403);
     }
@@ -230,7 +230,7 @@ class BookVariantControllerTest extends WebTestCase
     public function testEndpointDeleteWithAdmin(): void
     {
         $this->client->loginUser($this->getAdminUser());
-        $this->client->request('DELETE', '/api/book-variant/'.$this->getBookVariant()->getId());
+        $this->client->request('DELETE', '/api/book-variant/' . $this->getBookVariant()->getId());
 
         $this->assertResponseStatusCodeSame(200);
     }
