@@ -20,9 +20,9 @@ class BookVariant
     use DateTimeTrait;
     use EnableTrait;
 
-    public const TYPE_BROCHER = 'brocher';
+    public const TYPE_BROCHER = 'broché';
     public const TYPE_POCHE = 'poche';
-    public const TYPE_RELIER = 'relier';
+    public const TYPE_RELIER = 'relié';
     public const TYPE_EBOOK = 'ebook';
 
     #[ORM\Id]
