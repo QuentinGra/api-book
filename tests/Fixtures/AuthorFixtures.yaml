@@ -1,0 +1,10 @@
+App\Entity\Author:
+  author_{1..5}:
+    firstName: <firstName()>
+    lastName: <lastName()>
+    enable: true
+
+  author_test:
+    firstName: test
+    lastName: test
+    enable: true

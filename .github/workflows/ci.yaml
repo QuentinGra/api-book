@@ -11,16 +11,6 @@ jobs:
     name: Symfony 7 (PHP ${{ matrix.php-versions }})
     # https://hub.docker.com/_/ubuntu/
     runs-on: ubuntu-latest
-    services:
-      # https://docs.docker.com/samples/library/mysql/
-      mysql:
-        image: mysql
-        env:
-          MYSQL_ROOT_PASSWORD: root
-        ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-
     strategy:
       fail-fast: true
       matrix:
@@ -29,14 +19,14 @@ jobs:
       # —— Setup Github actions 🐙 —————————————————————————————————————————————
       # https://github.com/actions/checkout (official)
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       # https://github.com/shivammathur/setup-php (community)
       - name: Setup PHP, extensions and composer with shivammathur/setup-php
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-versions }}
-          extensions: mbstring, xml, ctype, iconv, intl, pdo, pdo_mysql, dom, filter, gd, iconv, json, mbstring, fileinfo
+          extensions: mbstring, openssl, xml, ctype, iconv, intl, pdo, pdo_mysql, dom, filter, gd, iconv, json, fileinfo
           coverage: xdebug
         env:
           update: true
@@ -50,10 +40,10 @@ jobs:
 
       - name: Get composer cache directory
         id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
       - name: Cache composer dependencies
-        uses: actions/cache@v1
+        uses: actions/cache@v4
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -62,23 +52,21 @@ jobs:
       - name: Install Composer dependencies
         run: composer install
 
-      # —— Symfony 🎵 ——————————————————————————————————————————————————————————
-      - name: Check Symfony requirements
-        run: php vendor/bin/requirements-checker
-
-      - name: Check the Symfony console
-        run: |
-          php bin/console about
-
       ## —— Coding standards ✨ ————————————————————————————————————————————————
-      - name: Coding standards checks (php_codesniffer + php-cs-fixer)
+      - name: Coding standards checks (php-cs-fixer)
         run: php vendor/bin/php-cs-fixer fix src
 
       ## -- Unit Test analysis ✨ —————————————————————————————————————————————————
+      - name: Generate keypair Token JWT
+        run: |
+          composer dump-env test
+          php bin/console lexik:jwt:generate-keypair
+
       - name: PHPUnit test for unit test application
         run: |
+          php bin/console ca:cl --env=test
           php bin/console doctrine:database:create --env=test
-          php bin/console doctrine:schema:update --env=test --force --complete
+          php bin/console doctrine:schema:update --env=test --force
           php bin/phpunit --testdox --coverage-clover=./phpunit-coverage.xml
 
       - name: Upload coverage reports to Codecov

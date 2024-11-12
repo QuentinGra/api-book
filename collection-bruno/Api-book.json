@@ -1,0 +1,1545 @@
+{
+  "name": "Api-book",
+  "version": "1",
+  "items": [
+    {
+      "type": "folder",
+      "name": "Authentification",
+      "items": [
+        {
+          "type": "http",
+          "name": "Login",
+          "seq": 1,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/login",
+            "method": "POST",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"username\": \"admin@test.com\",\n  \"password\": \"Test1234!\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Logout",
+          "seq": 3,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/user/logout",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Me",
+          "seq": 2,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/user/me",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "folder",
+      "name": "Author",
+      "items": [
+        {
+          "type": "http",
+          "name": "Delete Auhtor",
+          "seq": 4,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/author/9",
+            "method": "DELETE",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Patch Author",
+          "seq": 6,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/author/13",
+            "method": "PATCH",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"firstName\": \"Pierre\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Post Author",
+          "seq": 2,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/author/create",
+            "method": "POST",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "multipartForm",
+              "json": "{\n  \"firstName\": \"Alex\",\n  \"lastName\": \"Dupont\",\n  \"enable\": false\n}",
+              "formUrlEncoded": [],
+              "multipartForm": [
+                {
+                  "type": "text",
+                  "name": "firstName",
+                  "value": "test",
+                  "enabled": true
+                },
+                {
+                  "type": "file",
+                  "name": "image",
+                  "value": [
+                    "C:\\Users\\Adminform\\Downloads\\Design_sans_titre38.png"
+                  ],
+                  "enabled": true
+                },
+                {
+                  "type": "text",
+                  "name": "lastName",
+                  "value": "test",
+                  "enabled": true
+                },
+                {
+                  "type": "text",
+                  "name": "enable",
+                  "value": "true",
+                  "enabled": true
+                }
+              ]
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Put Author",
+          "seq": 5,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/author/13",
+            "method": "PUT",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"firstName\": \"Pierr\",\n  \"lastName\": \"Dupont\",\n  \"description\": \"Test\",\n  \"enable\": false\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Show Author",
+          "seq": 3,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/author/21",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Update Image User",
+          "seq": 7,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/author/16/image",
+            "method": "POST",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "multipartForm",
+              "formUrlEncoded": [],
+              "multipartForm": [
+                {
+                  "type": "file",
+                  "name": "image",
+                  "value": [
+                    "C:\\Users\\Adminform\\Downloads\\sylius.png"
+                  ],
+                  "enabled": true
+                }
+              ]
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "index Author",
+          "seq": 1,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/author/",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "folder",
+      "name": "Book",
+      "items": [
+        {
+          "type": "http",
+          "name": "Delete Book",
+          "seq": 7,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/book/38",
+            "method": "DELETE",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Index Book",
+          "seq": 2,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/book/",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Patch Book",
+          "seq": 5,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/book/37",
+            "method": "PATCH",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"name\": \"Test\",\n  \"author\": 28,\n  \"edition\": 28\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Put Book",
+          "seq": 6,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/book/37",
+            "method": "PUT",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"name\": \"SUPER Book\",\n  \"description\": \"Ex repellat quasi dolor aut et. Praesentium ullam minus iure dignissimos. Voluptatem perferendis repudiandae numquam. Dolor ipsum eum sit ut aut enim.\",\n  \"dateEdition\": \"2000-11-27T00:00:00+00:00\",\n  \"enable\": true,\n  \"edition\": 29,\n  \"author\": 29,\n  \"categories\": [29,30]\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Show Book",
+          "seq": 3,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/book/21",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Create Book",
+          "seq": 1,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/book/create",
+            "method": "POST",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"name\": \"Masqueradee\",\n  \"description\": \"Ex repellat quasi dolor aut et. Praesentium ullam minus iure dignissimos. Voluptatem perferendis repudiandae numquam. Dolor ipsum eum sit ut aut enim.\",\n  \"dateEdition\": \"2000-11-27T00:00:00+00:00\",\n  \"enable\": true,\n  \"edition\": 17,\n  \"author\": 17,\n  \"categories\": [23, 24],\n  \"bookVariants\": [11, 12, 13]\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Latest Book",
+          "seq": 4,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/book/latest",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "folder",
+      "name": "BookImage",
+      "items": [
+        {
+          "type": "http",
+          "name": "Add image",
+          "seq": 1,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/book-image/create",
+            "method": "POST",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "multipartForm",
+              "formUrlEncoded": [],
+              "multipartForm": [
+                {
+                  "type": "file",
+                  "name": "image",
+                  "value": [
+                    "C:\\Users\\Adminform\\Downloads\\sylius.png"
+                  ],
+                  "enabled": true
+                },
+                {
+                  "type": "text",
+                  "name": "enable",
+                  "value": "true",
+                  "enabled": true
+                },
+                {
+                  "type": "text",
+                  "name": "book",
+                  "value": "11",
+                  "enabled": true
+                }
+              ]
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Delete Image",
+          "seq": 4,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/book-image/4",
+            "method": "DELETE",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Index image",
+          "seq": 2,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/book-image",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Show Image",
+          "seq": 3,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/book-image/5",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "folder",
+      "name": "BookVariant",
+      "items": [
+        {
+          "type": "http",
+          "name": "Create BookVariant",
+          "seq": 1,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/book-variant/create",
+            "method": "POST",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"type\": \"poche\",\n  \"enable\": true\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Delete BookVariant",
+          "seq": 6,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/book-variant/7",
+            "method": "DELETE",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Index BookVariant",
+          "seq": 2,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/book-variant",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Patch BookVariant",
+          "seq": 4,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/book-variant/2",
+            "method": "PATCH",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"type\": \"poche\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Put BookVariant",
+          "seq": 5,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/book-variant/2",
+            "method": "PUT",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"type\": \"poche\",\n  \"enable\": false\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Show BookVariant",
+          "seq": 3,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/book-variant/1",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "folder",
+      "name": "Category",
+      "items": [
+        {
+          "type": "http",
+          "name": "Create Category",
+          "seq": 1,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/category/create",
+            "method": "POST",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"name\": \"test\",\n  \"enable\": true\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Delete Category",
+          "seq": 6,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/category/1",
+            "method": "DELETE",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Index Category",
+          "seq": 2,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/category",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Patch Category",
+          "seq": 4,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/category/1",
+            "method": "PATCH",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"name\": \"Toto\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Put Category",
+          "seq": 5,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/category/1",
+            "method": "PUT",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"name\": \"Beth\",\n  \"description\": \"Lorem\",\n  \"enable\": true\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Show Category",
+          "seq": 3,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/category/23",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "folder",
+      "name": "Edition",
+      "items": [
+        {
+          "type": "http",
+          "name": "Create Edition",
+          "seq": 1,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/edition/create",
+            "method": "POST",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"name\": \"test\",\n  \"enable\": true\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Delete Edition",
+          "seq": 6,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/edition/11",
+            "method": "DELETE",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Patch Edition",
+          "seq": 4,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/edition/4",
+            "method": "PATCH",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"name\": \"Toto\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Index Edition",
+          "seq": 2,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/edition",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Put Edition",
+          "seq": 5,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/edition/4",
+            "method": "PUT",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"name\": \"Beth\",\n  \"description\": \"Lorem\",\n  \"enable\": true\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Show Edition",
+          "seq": 3,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/edition/4",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "folder",
+      "name": "Rating",
+      "items": [
+        {
+          "type": "http",
+          "name": "Create Rating",
+          "seq": 1,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/rating/create",
+            "method": "POST",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"book\": 11,\n  \"user\": 13,\n  \"rating\": 5\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Index Rating",
+          "seq": 2,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/rating/",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Delete Rating",
+          "seq": 5,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/rating/6",
+            "method": "DELETE",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Patch Rating",
+          "seq": 3,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/rating/6",
+            "method": "PATCH",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"rating\": 3\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Put Rating",
+          "seq": 4,
+          "request": {
+            "url": "",
+            "method": "PUT",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "folder",
+      "name": "ReadingList",
+      "items": [
+        {
+          "type": "http",
+          "name": "Create List",
+          "seq": 1,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/list/create",
+            "method": "POST",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"name\": \"test\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Delete List",
+          "seq": 6,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/list/14",
+            "method": "DELETE",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Index List",
+          "seq": 2,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/list/",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Put List",
+          "seq": 5,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/list/7",
+            "method": "PUT",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"name\": \"Sf\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Show List",
+          "seq": 3,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/list/9",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Patch List",
+          "seq": 4,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/list/7",
+            "method": "PATCH",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"name\": \"bus\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "folder",
+      "name": "ReadingListBook",
+      "items": [
+        {
+          "type": "http",
+          "name": "Add Book",
+          "seq": 1,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/list/book/add",
+            "method": "POST",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"book\": 15,\n  \"readingList\": 15,\n  \"status\": \"wish\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Patch Book",
+          "seq": 3,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/list/book/4",
+            "method": "PATCH",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Put Book",
+          "seq": 2,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/list/book/4",
+            "method": "PUT",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"status\": \"wish\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Remove Book",
+          "seq": 4,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/list/book/4",
+            "method": "DELETE",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "folder",
+      "name": "User",
+      "items": [
+        {
+          "type": "http",
+          "name": "Create User",
+          "seq": 4,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/user/create",
+            "method": "POST",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n    \"email\": \"admin@hotmail.com\",\n    \"roles\": [\n        \"ROLE_USER\"\n    ],\n    \"password\": \"Test1234!\",\n    \"firstName\": \"User\",\n    \"lastName\": \"User\",\n    \"birthDate\": null\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Index User",
+          "seq": 1,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/user",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Patch User",
+          "seq": 3,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/user/15",
+            "method": "PATCH",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"email\": \"admin@test1.com\",\n  \"password\": \"Test1234@\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Put User",
+          "seq": 5,
+          "request": {
+            "url": "",
+            "method": "PUT",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Delete User",
+          "seq": 6,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/user/17",
+            "method": "DELETE",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Show User",
+          "seq": 2,
+          "request": {
+            "url": "https://127.0.0.1:8000/api/user/7",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "environments": [],
+  "brunoConfig": {
+    "version": "1",
+    "name": "Api-book",
+    "type": "collection",
+    "ignore": [
+      "node_modules",
+      ".git"
+    ]
+  }
+}
